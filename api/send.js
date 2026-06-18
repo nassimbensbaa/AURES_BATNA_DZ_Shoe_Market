@@ -1,8 +1,9 @@
+
 export default async function handler(req,res){
 
   res.setHeader("Access-Control-Allow-Origin","*");
 
-  const r = await fetch(process.env.GOOGLE_SCRIPT_URL, {
+  const r = await fetch(process.env.GOOGLE_SCRIPT_URL,{
     method:"POST",
     headers:{"Content-Type":"application/json"},
     body:JSON.stringify(req.body)
