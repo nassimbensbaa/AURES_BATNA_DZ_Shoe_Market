@@ -1,38 +1,42 @@
-function getAPI() {
-  return document.getElementById("app").dataset.api;
-}
+export default async function handler(req,res){
 
-async function order(id, name) {
+  res.setHeader("Access-Control-Allow-Origin","*");
+  res.setHeader("Access-Control-Allow-Methods","POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers","Content-Type");
 
-  const qty = document.getElementById("q" + id).value;
+  if(req.method==="OPTIONS")
+    return res.status(200).end();
 
-  const data = {
-    productId: id,
-    productName: name,
-    qty: Number(qty),
+  if(req.method!=="POST")
+    return res.status(405).json({ok:false});
 
-    fullName: prompt("الاسم الكامل"),
-    phone: prompt("رقم الهاتف"),
-    color: prompt("اللون"),
-    size: prompt("المقاس"),
-    wilaya: prompt("الولاية"),
-    deliveryType: prompt("home / office"),
+  try{
 
-    productPrice: 0,
-    deliveryPrice: 0,
-    total: 0
-  };
+    const response = await fetch(
+      process.env.GOOGLE_SCRIPT_URL,
+      {
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify(req.body)
+      }
+    );
 
-  try {
-    await fetch(getAPI(), {
-      method: "POST",
-      body: JSON.stringify(data)
+    const result = await response.text();
+
+    res.status(200).json({
+      ok:true,
+      result
     });
 
-    alert("تم إرسال الطلب بنجاح ✅");
+  }catch(err){
 
-  } catch (err) {
-    console.error("Order error:", err);
-    alert("خطأ في إرسال الطلب ❌");
+    res.status(500).json({
+      ok:false,
+      error:err.message
+    });
+
   }
+
 }
