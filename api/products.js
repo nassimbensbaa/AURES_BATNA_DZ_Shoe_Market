@@ -1,40 +1,34 @@
-const API = `${GOOGLE_SCRIPT_URL}?action=products`;
-
 async function loadProducts() {
   try {
+    const API = window.GOOGLE_SCRIPT_URL + "?action=products";
+
     const res = await fetch(API);
-    const products = await res.json();
+    const data = await res.json();
 
     const container = document.getElementById("products");
     container.innerHTML = "";
 
-    products.forEach(product => {
-      container.innerHTML += createCard(product);
+    data.forEach(p => {
+      container.innerHTML += `
+        <div class="card">
+          <img src="${p.image}">
+          <h3>${p.name}</h3>
+          <p>اللون: ${p.color}</p>
+          <p>المقاس: ${p.size}</p>
+          <p>المخزون: ${p.stock}</p>
+
+          <input type="number" id="q${p.id}" value="1" min="1">
+
+          <button onclick="order(${p.id}, '${p.name}')">
+            طلب
+          </button>
+        </div>
+      `;
     });
 
-  } catch (error) {
-    console.error("Error loading products:", error);
+  } catch (err) {
+    console.error("Error:", err);
   }
 }
 
-function createCard(p) {
-  return `
-    <div class="card">
-      <img src="${p.image}" alt="${p.name}">
-
-      <h3>${p.name}</h3>
-
-      <p>🎨 اللون: ${p.color}</p>
-      <p>📏 المقاس: ${p.size}</p>
-      <p>📦 المتوفر: ${p.stock}</p>
-
-      <input type="number" id="q${p.id}" value="1" min="1">
-
-      <button onclick="order(${p.id}, '${p.name}')">
-        طلب الآن
-      </button>
-    </div>
-  `;
-}
-
-loadProducts();
+window.onload = loadProducts;
