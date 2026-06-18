@@ -1,24 +1,11 @@
-export default async function handler(req, res) {
+export default async function handler(req,res){
 
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Origin","*");
 
-  try {
+  const url = process.env.GOOGLE_SCRIPT_URL + "?action=products";
 
-    const response = await fetch(
-      process.env.GOOGLE_SCRIPT_URL + "?action=products"
-    );
+  const r = await fetch(url);
+  const data = await r.json();
 
-    const data = await response.json();
-
-    res.status(200).json(data);
-
-  } catch(err){
-
-    res.status(500).json({
-      ok:false,
-      error:err.message
-    });
-
-  }
-
+  res.status(200).json(data);
 }
