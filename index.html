@@ -1,1 +1,251 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>متجر الأحذية</title>
 
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:#f4f4f4;
+}
+
+header{
+background:#111;
+color:#fff;
+text-align:center;
+padding:15px;
+font-size:20px;
+}
+
+#products{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:10px;
+padding:10px;
+}
+
+.card{
+background:#fff;
+border-radius:10px;
+overflow:hidden;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+padding:10px;
+}
+
+.card img{
+width:100%;
+height:220px;
+object-fit:cover;
+border-radius:10px;
+}
+
+.colors{
+display:flex;
+gap:5px;
+margin-top:8px;
+flex-wrap:wrap;
+}
+
+.color-btn{
+padding:5px 10px;
+border:1px solid #ccc;
+border-radius:6px;
+cursor:pointer;
+background:#eee;
+font-size:12px;
+}
+
+.btn{
+width:100%;
+margin-top:10px;
+padding:10px;
+background:#111;
+color:#fff;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+
+.btn:hover{
+opacity:0.9;
+}
+
+/* modal */
+.modal{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.5);
+justify-content:center;
+align-items:center;
+}
+
+.modal-content{
+background:#fff;
+padding:20px;
+border-radius:10px;
+width:90%;
+max-width:400px;
+}
+
+select{
+width:100%;
+padding:10px;
+margin:5px 0;
+}
+
+.price{
+margin:10px 0;
+font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+🛒 متجر الأحذية
+</header>
+
+<div id="products"></div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+<div class="modal-content">
+
+<h3>إتمام الطلب</h3>
+
+<select id="wilaya"></select>
+
+<select id="type">
+<option value="home">منزل</option>
+<option value="office">مكتب</option>
+</select>
+
+<div class="price" id="deliveryPrice">التوصيل: 0 دج</div>
+
+<button class="btn" onclick="confirmOrder()">تأكيد الطلب</button>
+
+</div>
+</div>
+
+<script>
+let PRODUCTS = [];
+let DELIVERY = [];
+let SELECTED = null;
+
+/* ================= LOAD ================= */
+async function load(){
+
+  PRODUCTS = await fetch("/api/products").then(r=>r.json());
+  DELIVERY = await fetch("/api/delivery").then(r=>r.json());
+
+  render();
+}
+
+/* ================= RENDER PRODUCTS ================= */
+function render(){
+
+let html="";
+
+PRODUCTS.forEach((p,i)=>{
+
+html+=`
+<div class="card">
+
+<img id="img-${i}" src="${p.image}">
+
+<h3>${p.name}</h3>
+
+<div>اللون: ${p.color}</div>
+
+<div class="colors">
+<button class="color-btn" onclick="changeColor(${i},'${p.image}')">
+${p.color}
+</button>
+</div>
+
+<button class="btn" onclick="openOrder(${i})">
+طلب
+</button>
+
+</div>
+`;
+
+});
+
+document.getElementById("products").innerHTML=html;
+}
+
+/* ================= CHANGE IMAGE ================= */
+function changeColor(i,img){
+document.getElementById("img-"+i).src = img;
+}
+
+/* ================= OPEN ORDER ================= */
+function openOrder(i){
+
+SELECTED = PRODUCTS[i];
+
+document.getElementById("modal").style.display="flex";
+
+let options = "";
+
+DELIVERY.forEach(d=>{
+options += `<option value="${d.wilaya}">${d.wilaya}</option>`;
+});
+
+document.getElementById("wilaya").innerHTML = options;
+
+}
+
+/* ================= CALC DELIVERY ================= */
+document.getElementById("wilaya").onchange =
+document.getElementById("type").onchange = calc;
+
+function calc(){
+
+let w = document.getElementById("wilaya").value;
+let t = document.getElementById("type").value;
+
+let d = DELIVERY.find(x=>x.wilaya==w);
+if(!d) return;
+
+let price = (t=="home") ? d.home : d.office;
+
+document.getElementById("deliveryPrice").innerText =
+"التوصيل: " + price + " دج";
+}
+
+/* ================= CONFIRM ORDER ================= */
+async function confirmOrder(){
+
+let w = document.getElementById("wilaya").value;
+let t = document.getElementById("type").value;
+
+await fetch("/api/send",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+productId: SELECTED.id,
+productName: SELECTED.name,
+color: SELECTED.color,
+size: SELECTED.size,
+wilaya: w,
+type: t,
+qty:1
+})
+});
+
+alert("تم إرسال الطلب ✅");
+document.getElementById("modal").style.display="none";
+}
+
+load();
+</script>
+
+</body>
+</html>
