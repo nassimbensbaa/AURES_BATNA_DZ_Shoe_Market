@@ -2,18 +2,91 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>متجر الأحذية</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>متجر الأحذية DZ</title>
 
 <style>
-body{font-family:Arial;margin:0;background:#f5f5f5}
-header{text-align:center;background:#111;color:#fff;padding:10px}
-img{max-width:100%}
+body{
+margin:0;
+font-family:Arial;
+background:#f5f6f8;
+}
 
-.container{max-width:500px;margin:auto;padding:10px;background:#fff}
+header{
+background:#111;
+text-align:center;
+padding:10px;
+}
 
-.colors button{
-margin:5px;
-padding:5px 10px;
+header img{
+height:70px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+padding:15px;
+}
+
+.product-box{
+background:#fff;
+border-radius:15px;
+padding:15px;
+box-shadow:0 3px 15px rgba(0,0,0,0.1);
+}
+
+.main-img{
+width:100%;
+height:320px;
+object-fit:contain;
+border-radius:10px;
+background:#fff;
+}
+
+.colors{
+display:flex;
+gap:8px;
+margin-top:10px;
+flex-wrap:wrap;
+}
+
+.color-btn{
+padding:6px 10px;
+border:1px solid #ddd;
+border-radius:8px;
+cursor:pointer;
+background:#eee;
+}
+
+.form{
+margin-top:15px;
+display:flex;
+flex-direction:column;
+gap:8px;
+}
+
+input,select{
+padding:10px;
+border-radius:8px;
+border:1px solid #ddd;
+}
+
+.price-box{
+margin-top:10px;
+padding:10px;
+background:#f1f1f1;
+border-radius:8px;
+font-weight:bold;
+}
+
+.btn{
+background:#111;
+color:#fff;
+padding:12px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+margin-top:10px;
 }
 </style>
 </head>
@@ -21,18 +94,23 @@ padding:5px 10px;
 <body>
 
 <header>
-<img src="images/logo.png" style="height:60px">
+<img src="images/logo.png">
 </header>
 
 <div class="container">
 
-<img id="mainImg" src="">
+<div class="product-box">
 
-<h3 id="name"></h3>
+<img id="img" class="main-img">
 
-<div id="colors"></div>
+<h2 id="name"></h2>
 
-<input id="fullName" placeholder="الاسم الكامل"><br><br>
+<div id="colors" class="colors"></div>
+
+<div class="form">
+
+<input id="fullName" placeholder="الاسم الكامل">
+<input id="phone" placeholder="رقم الهاتف">
 
 <select id="wilaya"></select>
 
@@ -41,7 +119,13 @@ padding:5px 10px;
 <option value="office">مكتب</option>
 </select>
 
-<button onclick="send()">تأكيد الطلب</button>
+<div class="price-box" id="price">التوصيل: 0 دج</div>
+
+<button class="btn" onclick="send()">تأكيد الطلب</button>
+
+</div>
+
+</div>
 
 </div>
 
@@ -49,84 +133,102 @@ padding:5px 10px;
 
 let PRODUCTS=[]
 let DELIVERY=[]
-let selected=null
+let current=null
 
 async function load(){
 
 PRODUCTS = await fetch("/api/products").then(r=>r.json())
 DELIVERY = await fetch("/api/delivery").then(r=>r.json())
 
-showProduct()
+current = PRODUCTS[0]
+
+render()
 
 loadWilaya()
 
 }
 
-function showProduct(){
+function render(){
 
-selected = PRODUCTS[0]
+document.getElementById("img").src = current.image
+document.getElementById("name").innerText = current.name
 
-document.getElementById("mainImg").src = selected.image
+let colors = PRODUCTS.filter(p=>p.id==current.id)
 
-document.getElementById("name").innerText = selected.name
-
-let html=""
-
-PRODUCTS.forEach(p=>{
-
-html+=`
-<button onclick="change('${p.image}','${p.color}')">
-${p.color}
+document.getElementById("colors").innerHTML =
+colors.map(c=>`
+<button class="color-btn" onclick="change('${c.image}','${c.color}')">
+${c.color}
 </button>
-`
-
-})
-
-document.getElementById("colors").innerHTML=html
+`).join("")
 
 }
 
 function change(img,color){
 
-document.getElementById("mainImg").src = img
+current.image = img
+current.color = color
 
-selected.image = img
-
-selected.color = color
+document.getElementById("img").src = img
 
 }
 
 function loadWilaya(){
 
-let html=""
+document.getElementById("wilaya").innerHTML =
+DELIVERY.map(d=>`
+<option value="${d.name}">${d.name}</option>
+`).join("")
 
-DELIVERY.forEach(d=>{
-html+=`<option value="${d.wilaya}">${d.wilaya}</option>`
-})
+}
 
-document.getElementById("wilaya").innerHTML=html
+document.getElementById("wilaya").onchange =
+document.getElementById("type").onchange = calc
+
+function calc(){
+
+let w = document.getElementById("wilaya").value
+let t = document.getElementById("type").value
+
+let d = DELIVERY.find(x=>x.name==w)
+if(!d) return
+
+let price = t=="home"?d.home:d.office
+
+document.getElementById("price").innerText =
+"التوصيل: "+price+" دج"
 
 }
 
 async function send(){
 
-let wilaya=document.getElementById("wilaya").value
-let type=document.getElementById("type").value
+let w = document.getElementById("wilaya").value
+let t = document.getElementById("type").value
+
+let d = DELIVERY.find(x=>x.name==w)
+
+let price = t=="home"?d.home:d.office
 
 await fetch("/api/send",{
 method:"POST",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify({
-productId:selected.id,
-productName:selected.name,
-color:selected.color,
-wilaya:wilaya,
-type:type,
+productId:current.id,
+productName:current.name,
+color:current.color,
+size:current.size,
+fullName:document.getElementById("fullName").value,
+phone:document.getElementById("phone").value,
+wilaya:w,
+deliveryType:t,
+deliveryPrice:price,
+productPrice:0,
+total:price,
 qty:1
 })
 })
 
-alert("تم الطلب")
+alert("تم الطلب بنجاح ✅")
 
 }
 
