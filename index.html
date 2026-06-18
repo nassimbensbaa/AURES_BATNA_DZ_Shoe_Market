@@ -2,316 +2,138 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AURES BATNA DZ | متجر الأحذية</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;600;700&display=swap" rel="stylesheet">
+<title>متجر الأحذية</title>
 
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Cairo',sans-serif;
-}
-
-body{
-background:#f5f5f5;
-}
-
-header{
-background:#fff;
-padding:10px;
-text-align:center;
-box-shadow:0 2px 10px rgba(0,0,0,.08);
-position:sticky;
-top:0;
-z-index:100;
-}
-
-header h1{
-font-size:22px;
-color:#111;
-}
-
-.products{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:15px;
-padding:15px;
-}
-
-.card{
-background:#fff;
-border-radius:12px;
-overflow:hidden;
-box-shadow:0 2px 10px rgba(0,0,0,.08);
-}
-
-.card img{
-width:100%;
-height:220px;
-object-fit:contain;
-background:#fff;
-}
-
-.card-content{
-padding:10px;
-}
-
-.card h3{
-font-size:16px;
-margin-bottom:5px;
-}
-
-.meta{
-font-size:13px;
-margin:3px 0;
-color:#555;
-}
-
-.stock{
-color:green;
-font-weight:bold;
-}
-
-.btn{
-width:100%;
-border:none;
-padding:10px;
-border-radius:8px;
-cursor:pointer;
-background:#111;
-color:white;
-margin-top:8px;
-}
-
-.btn:hover{
-opacity:.9;
-}
-
-.modal{
-display:none;
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.5);
-justify-content:center;
-align-items:center;
-z-index:999;
-}
-
-.modal-content{
-background:white;
-padding:20px;
-border-radius:12px;
-width:90%;
-max-width:450px;
-}
-
-.modal-content h3{
-margin-bottom:10px;
-text-align:center;
-}
-
-.form-group{
-margin-bottom:10px;
-}
-
-.form-group input,
-.form-group select{
-width:100%;
-padding:10px;
-border:1px solid #ddd;
-border-radius:8px;
-}
-
-footer{
-text-align:center;
-padding:15px;
-background:#fff;
-margin-top:20px;
-}
+body{font-family:Arial;background:#f4f4f4;margin:0}
+.card{background:#fff;margin:10px;padding:10px;border-radius:10px}
+img{width:100%;height:200px;object-fit:cover}
+button{margin:5px;padding:6px 10px}
+.modal{position:fixed;inset:0;background:#0008;display:none}
+.box{background:#fff;padding:20px;margin:50px auto;width:300px}
 </style>
 </head>
 
 <body>
 
-<header>
-<h1>👟 AURES BATNA DZ</h1>
-</header>
+<div id="products"></div>
 
-<div id="products" class="products"></div>
+<!-- ORDER -->
+<div class="modal" id="modal">
+  <div class="box">
+    <h3>الطلب</h3>
 
-<!-- نافذة الطلب -->
-<div class="modal" id="orderModal">
-<div class="modal-content">
+    <select id="wilaya"></select>
+    <br><br>
 
-<h3>إتمام الطلب</h3>
+    <select id="type">
+      <option value="home">منزل</option>
+      <option value="office">مكتب</option>
+    </select>
 
-<div class="form-group">
-<input type="text" id="fullName" placeholder="الاسم الكامل">
+    <br><br>
+
+    <div id="price"></div>
+
+    <button onclick="confirmOrder()">تأكيد</button>
+  </div>
 </div>
-
-<div class="form-group">
-<input type="text" id="phone" placeholder="رقم الهاتف">
-</div>
-
-<div class="form-group">
-<input type="text" id="wilaya" placeholder="الولاية">
-</div>
-
-<div class="form-group">
-<select id="deliveryType">
-<option value="office">التوصيل إلى المكتب</option>
-<option value="home">التوصيل إلى المنزل</option>
-</select>
-</div>
-
-<button class="btn" onclick="sendOrder()">تأكيد الطلب</button>
-
-</div>
-</div>
-
-<footer>
-AURES BATNA DZ © 2026
-</footer>
 
 <script>
 
+const API = "YOUR_GOOGLE_SCRIPT_URL";
+
 let PRODUCTS = [];
-let CURRENT_PRODUCT = null;
+let DELIVERY = [];
+let SELECTED = null;
 
-async function loadProducts(){
+async function load(){
 
-try{
+  PRODUCTS = await fetch(API+"?action=products").then(r=>r.json());
+  DELIVERY = await fetch(API+"?action=delivery").then(r=>r.json());
 
-const res = await fetch("/api/products");
-PRODUCTS = await res.json();
-
-renderProducts();
-
-}catch(err){
-
-console.error(err);
-
+  render();
 }
 
-}
-
-function renderProducts(){
+function render(){
 
 let html = "";
 
-PRODUCTS.forEach((p,index)=>{
+PRODUCTS.forEach((p,i)=>{
 
 html += `
 <div class="card">
-
-<img src="${p.image}" alt="${p.name}">
-
-<div class="card-content">
-
+<img id="img${i}" src="${p.image}">
 <h3>${p.name}</h3>
 
-<div class="meta">اللون: ${p.color}</div>
-
-<div class="meta">المقاس: ${p.size}</div>
-
-<div class="meta stock">
-المتوفر: ${p.stock}
-</div>
-
-<button class="btn" onclick="openOrder(${index})">
-اطلب الآن
+<button onclick="selectColor(${i})">
+${p.color}
 </button>
 
-</div>
-
+<button onclick="openOrder(${i})">طلب</button>
 </div>
 `;
 
 });
 
 document.getElementById("products").innerHTML = html;
+}
+
+function selectColor(i){
+  document.querySelectorAll("img")[i].src = PRODUCTS[i].image;
+}
+
+function openOrder(i){
+
+SELECTED = PRODUCTS[i];
+
+document.getElementById("modal").style.display="block";
+
+/* wilaya list */
+let w = DELIVERY.map(d=>`<option>${d.wilaya}</option>`).join("");
+document.getElementById("wilaya").innerHTML = w;
 
 }
 
-function openOrder(index){
+document.getElementById("type").onchange =
+document.getElementById("wilaya").onchange = function(){
 
-CURRENT_PRODUCT = PRODUCTS[index];
+let w = document.getElementById("wilaya").value;
+let t = document.getElementById("type").value;
 
-document.getElementById("orderModal").style.display = "flex";
+let d = DELIVERY.find(x=>x.wilaya==w);
 
+if(!d) return;
+
+let price = t=="home"?d.home:d.office;
+
+document.getElementById("price").innerText =
+"التوصيل: " + price + " دج";
 }
 
-async function sendOrder(){
+async function confirmOrder(){
 
-const fullName = document.getElementById("fullName").value.trim();
-const phone = document.getElementById("phone").value.trim();
-const wilaya = document.getElementById("wilaya").value.trim();
-const deliveryType = document.getElementById("deliveryType").value;
+let w = document.getElementById("wilaya").value;
+let t = document.getElementById("type").value;
 
-if(!fullName || !phone){
-
-alert("أدخل الاسم ورقم الهاتف");
-
-return;
-
-}
-
-const orderData = {
-
-fullName,
-phone,
-wilaya,
-deliveryType,
-
-productId: CURRENT_PRODUCT.id,
-productName: CURRENT_PRODUCT.name,
-color: CURRENT_PRODUCT.color,
-size: CURRENT_PRODUCT.size
-
-};
-
-try{
-
-const res = await fetch("/api/send",{
-
+await fetch(API,{
 method:"POST",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify(orderData)
-
+body:JSON.stringify({
+productId: SELECTED.id,
+productName: SELECTED.name,
+color: SELECTED.color,
+size: SELECTED.size,
+wilaya: w,
+deliveryType: t,
+qty:1
+})
 });
 
-const result = await res.json();
-
-if(result.ok){
-
-alert("تم إرسال الطلب بنجاح ✅");
-
-document.getElementById("orderModal").style.display = "none";
-
-}else{
-
-alert("فشل إرسال الطلب");
-
+alert("تم الطلب");
+document.getElementById("modal").style.display="none";
 }
 
-}catch(err){
-
-alert("خطأ في الاتصال");
-
-console.error(err);
-
-}
-
-}
-
-loadProducts();
+load();
 
 </script>
 
