@@ -212,12 +212,12 @@ font-weight:bold;
 
 <div class="gallery">
 
-<img id="mainImage" src="" alt="Nike Air">
+<img id="mainImage" src="images/nassim01.png" alt="Nike Air">
 
 <div class="thumb-list">
 
-<img id="thumb1" src="">
-<img id="thumb2" src="">
+<img id="thumb1" src="images/nassim01.png">
+<img id="thumb2" src="images/nassim02.png">
 
 </div>
 
@@ -410,14 +410,15 @@ function selectColor(color){
 
   currentProduct=colorProducts[0];
 
+  // تعيين الصور من مجلد images
   document.getElementById("mainImage").src =
-  currentProduct.image1;
+  "images/nassim01.png";
 
   document.getElementById("thumb1").src =
-  currentProduct.image1;
+  "images/nassim01.png";
 
   document.getElementById("thumb2").src =
-  currentProduct.image2;
+  "images/nassim02.png";
 
   document.getElementById("productPrice").innerText =
   currentProduct.price;
@@ -427,12 +428,12 @@ function selectColor(color){
 
   document.getElementById("thumb1").onclick=()=>{
     document.getElementById("mainImage").src=
-    currentProduct.image1;
+    "images/nassim01.png";
   };
 
   document.getElementById("thumb2").onclick=()=>{
     document.getElementById("mainImage").src=
-    currentProduct.image2;
+    "images/nassim02.png";
   };
 
   buildSizes(colorProducts);
