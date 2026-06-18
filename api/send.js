@@ -1,24 +1,30 @@
-export default function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+const API = "PUT_YOUR_SCRIPT_URL_HERE";
 
-  if (req.method !== "POST") {
-    return res.status(405).json({ ok: false, error: "Method not allowed" });
-  }
+async function order(id, name) {
 
-  const order = req.body;
+  const qty = document.getElementById("q" + id).value;
 
-  // رقم طلب عشوائي
-  const orderNumber = "ORD-" + Date.now();
+  const data = {
+    productId: id,
+    productName: name,
+    qty: Number(qty),
 
-  console.log("📦 New Order:", order);
+    fullName: prompt("الاسم الكامل"),
+    phone: prompt("رقم الهاتف"),
+    color: prompt("اللون"),
+    size: prompt("المقاس"),
+    wilaya: prompt("الولاية"),
+    deliveryType: prompt("التوصيل (home/office)"),
 
-  // هنا لاحقاً يمكن ربط:
-  // - Google Sheets
-  // - WhatsApp
-  // - Email
+    productPrice: 0,
+    deliveryPrice: 0,
+    total: 0
+  };
 
-  res.status(200).json({
-    ok: true,
-    orderNumber: orderNumber
+  await fetch(API, {
+    method: "POST",
+    body: JSON.stringify(data)
   });
+
+  alert("تم إرسال الطلب ✅");
 }
