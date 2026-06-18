@@ -1,44 +1,24 @@
-function getAPI() {
-  return document.getElementById("app").dataset.api;
-}
+export default async function handler(req, res) {
 
-async function loadProducts() {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+
   try {
-    const API = getAPI() + "?action=products";
 
-    const res = await fetch(API);
-    const products = await res.json();
+    const response = await fetch(
+      process.env.GOOGLE_SCRIPT_URL + "?action=products"
+    );
 
-    const container = document.getElementById("products");
-    container.innerHTML = "";
+    const data = await response.json();
 
-    products.forEach(p => {
-      container.innerHTML += createCard(p);
+    res.status(200).json(data);
+
+  } catch(err){
+
+    res.status(500).json({
+      ok:false,
+      error:err.message
     });
 
-  } catch (error) {
-    console.error("Error loading products:", error);
   }
+
 }
-
-function createCard(p) {
-  return `
-    <div class="card">
-      <img src="${p.image}" alt="${p.name}">
-
-      <h3>${p.name}</h3>
-
-      <p>🎨 اللون: ${p.color}</p>
-      <p>📏 المقاس: ${p.size}</p>
-      <p>📦 المتوفر: ${p.stock}</p>
-
-      <input type="number" id="q${p.id}" value="1" min="1">
-
-      <button onclick="order(${p.id}, '${p.name}')">
-        طلب الآن
-      </button>
-    </div>
-  `;
-}
-
-window.onload = loadProducts;
