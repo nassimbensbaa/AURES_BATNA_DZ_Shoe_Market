@@ -1,44 +1,28 @@
-export default function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Content-Type", "application/json");
+const API = "PUT_YOUR_SCRIPT_URL_HERE?action=products";
 
-  const data = {
-    products: [
-      {
-        id: 1,
-        name: "Nike Air",
-        price: 2500,
-        color: "أبيض",
-        size: 42,
-        qty: 10,
-        image: "nassim01.png"
-      },
-      {
-        id: 2,
-        name: "Nike Air",
-        price: 2600,
-        color: "أبيض",
-        size: 43,
-        qty: 5,
-        image: "nassim02.png"
-      },
-      {
-        id: 3,
-        name: "Nike Air",
-        price: 2700,
-        color: "أسود",
-        size: 42,
-        qty: 8,
-        image: "nassim03.png"
-      }
-    ],
+async function loadProducts() {
+  const res = await fetch(API);
+  const data = await res.json();
 
-    delivery: [
-      { wilaya: "الجزائر", home: 400, office: 250 },
-      { wilaya: "البليدة", home: 350, office: 200 },
-      { wilaya: "وهران", home: 500, office: 300 }
-    ]
-  };
+  const container = document.getElementById("products");
 
-  res.status(200).json(data);
+  data.forEach(p => {
+    container.innerHTML += `
+      <div class="card">
+        <img src="${p.image}">
+        <h3>${p.name}</h3>
+        <p>السعر: ${p.color}</p>
+        <p>المقاس: ${p.size}</p>
+        <p>المخزون: ${p.stock}</p>
+
+        <input type="number" id="q${p.id}" value="1" min="1">
+
+        <button onclick="order(${p.id}, '${p.name}', ${p.stock})">
+          طلب
+        </button>
+      </div>
+    `;
+  });
 }
+
+loadProducts();
