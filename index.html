@@ -41,11 +41,9 @@ box-shadow:0 4px 20px rgba(0,0,0,.08);
 }
 
 @media(max-width:768px){
-
 .product{
 grid-template-columns:1fr;
 }
-
 }
 
 .gallery img{
@@ -92,41 +90,22 @@ font-size:18px;
 font-weight:700;
 }
 
-.colors{
+.colors,.sizes{
 display:flex;
 gap:10px;
 flex-wrap:wrap;
 }
 
-.color-btn{
-padding:10px 16px;
-border:none;
-cursor:pointer;
-border-radius:10px;
-background:#eee;
-font-weight:bold;
-}
-
-.color-btn.active{
-background:#111;
-color:#fff;
-}
-
-.sizes{
-display:flex;
-gap:10px;
-flex-wrap:wrap;
-}
-
-.size-btn{
+.color-btn,.size-btn{
 padding:10px 15px;
 border:none;
 cursor:pointer;
 background:#eee;
 border-radius:10px;
+font-weight:bold;
 }
 
-.size-btn.active{
+.color-btn.active,.size-btn.active{
 background:#111;
 color:#fff;
 }
@@ -144,8 +123,7 @@ background:#fafafa;
 border-radius:15px;
 }
 
-input,
-select{
+input,select{
 width:100%;
 padding:12px;
 margin-bottom:10px;
@@ -158,12 +136,6 @@ font-size:15px;
 display:flex;
 gap:15px;
 margin:10px 0;
-}
-
-.delivery-type label{
-display:flex;
-gap:5px;
-align-items:center;
 }
 
 .summary{
@@ -182,11 +154,6 @@ border:none;
 border-radius:12px;
 font-size:18px;
 cursor:pointer;
-margin-top:15px;
-}
-
-.order-btn:hover{
-opacity:.9;
 }
 
 .success{
@@ -210,19 +177,21 @@ font-weight:bold;
 
 <div class="product">
 
+<!-- IMAGE -->
 <div class="gallery">
 
-<img id="mainImage" src="images/nassim01.png" alt="Nike Air">
+<img id="mainImage" src="" alt="product">
 
 <div class="thumb-list">
 
-<img id="thumb1" src="images/nassim01.png">
-<img id="thumb2" src="images/nassim02.png">
+<img id="thumb1">
+<img id="thumb2">
 
 </div>
 
 </div>
 
+<!-- INFO -->
 <div>
 
 <div class="title">Nike Air</div>
@@ -231,89 +200,46 @@ font-weight:bold;
 <span id="productPrice">0</span> دج
 </div>
 
-<div class="section-title">
-الألوان المتوفرة
-</div>
-
+<div class="section-title">الألوان المتوفرة</div>
 <div id="colors" class="colors"></div>
 
-<div class="section-title">
-المقاسات المتوفرة
-</div>
-
+<div class="section-title">المقاسات المتوفرة</div>
 <div id="sizes" class="sizes"></div>
 
 <div class="stock">
-المتوفر:
-<span id="stockQty">0</span>
+المتوفر: <span id="stockQty">0</span>
 </div>
 
 <div class="order-box">
 
-<input
-id="fullName"
-placeholder="الاسم الكامل">
-
-<input
-id="phone"
-placeholder="رقم الهاتف">
+<input id="fullName" placeholder="الاسم الكامل">
+<input id="phone" placeholder="رقم الهاتف">
 
 <select id="wilaya"></select>
 
 <div class="delivery-type">
 
 <label>
-<input
-type="radio"
-name="delivery"
-value="home"
-checked>
+<input type="radio" name="delivery" value="home" checked>
 المنزل
 </label>
 
 <label>
-<input
-type="radio"
-name="delivery"
-value="office">
+<input type="radio" name="delivery" value="office">
 المكتب
 </label>
 
 </div>
 
 <div class="summary">
-
-سعر الحذاء:
-<span id="shoePrice">0</span>
-دج
-
-<br>
-
-التوصيل:
-<span id="shippingPrice">0</span>
-دج
-
-<br>
-
-الإجمالي:
-<span id="totalPrice">0</span>
-دج
-
+سعر الحذاء: <span id="shoePrice">0</span> دج<br>
+التوصيل: <span id="shippingPrice">0</span> دج<br>
+الإجمالي: <span id="totalPrice">0</span> دج
 </div>
 
-<button
-class="order-btn"
-onclick="sendOrder()">
+<button class="order-btn" onclick="sendOrder()">اطلب الآن</button>
 
-اطلب الآن
-
-</button>
-
-<div
-id="success"
-class="success">
-تم إرسال الطلب بنجاح
-</div>
+<div id="success" class="success"></div>
 
 </div>
 
@@ -327,431 +253,212 @@ class="success">
 
 let PRODUCTS=[];
 let DELIVERY=[];
-
 let currentColor="";
 let currentSize="";
 let currentProduct=null;
 
 async function loadData(){
 
-  try{
+try{
 
-    const response = await fetch('/api/products');
+const res=await fetch('/api/products');
+const data=await res.json();
 
-    const data = await response.json();
+PRODUCTS=data.products||[];
+DELIVERY=data.delivery||[];
 
-    PRODUCTS = data.products || [];
-    DELIVERY = data.delivery || [];
+buildColors();
+buildWilayas();
 
-    buildColors();
-    buildWilayas();
-
-  }catch(err){
-
-    alert("خطأ في تحميل البيانات");
-
-    console.log(err);
-
-  }
-
+}catch(err){
+alert("خطأ في تحميل البيانات");
+}
 }
 
+/* COLORS */
 function buildColors(){
 
-  const colorsDiv = document.getElementById("colors");
+const colors=[...new Set(PRODUCTS.map(x=>x.color))];
+const div=document.getElementById("colors");
 
-  const colors = [...new Set(
-    PRODUCTS.map(x=>x.color)
-  )];
+div.innerHTML="";
 
-  colorsDiv.innerHTML="";
+colors.forEach(c=>{
+const btn=document.createElement("button");
+btn.className="color-btn";
+btn.textContent=c;
+btn.onclick=()=>selectColor(c);
+div.appendChild(btn);
+});
 
-  colors.forEach(color=>{
-
-    const btn=document.createElement("button");
-
-    btn.className="color-btn";
-
-    btn.textContent=color;
-
-    btn.onclick=()=>selectColor(color);
-
-    colorsDiv.appendChild(btn);
-
-  });
-
-  if(colors.length){
-    selectColor(colors[0]);
-  }
-
+if(colors.length) selectColor(colors[0]);
 }
 
+/* SELECT COLOR */
 function selectColor(color){
 
-  currentColor=color;
+currentColor=color;
 
-  document
-  .querySelectorAll(".color-btn")
-  .forEach(btn=>{
+document.querySelectorAll(".color-btn").forEach(b=>{
+b.classList.toggle("active",b.textContent===color);
+});
 
-    btn.classList.toggle(
-      "active",
-      btn.textContent===color
-    );
+const items=PRODUCTS.filter(x=>x.color===color);
 
-  });
+if(!items.length) return;
 
-  const colorProducts=
-  PRODUCTS.filter(
-    x=>x.color===color
-  );
+currentProduct=items[0];
 
-  if(!colorProducts.length) return;
+/* ✅ IMAGE FROM FOLDER */
+const imgPath="images/"+currentProduct.image;
 
-  currentProduct=colorProducts[0];
+document.getElementById("mainImage").src=imgPath;
+document.getElementById("thumb1").src=imgPath;
+document.getElementById("thumb2").src=imgPath;
 
-  // تعيين الصور من مجلد images
-  document.getElementById("mainImage").src =
-  "images/nassim01.png";
+/* CLICK THUMBS */
+document.getElementById("thumb1").onclick=()=>{
+document.getElementById("mainImage").src=imgPath;
+};
 
-  document.getElementById("thumb1").src =
-  "images/nassim01.png";
+document.getElementById("thumb2").onclick=()=>{
+document.getElementById("mainImage").src=imgPath;
+};
 
-  document.getElementById("thumb2").src =
-  "images/nassim02.png";
+document.getElementById("productPrice").innerText=currentProduct.price;
+document.getElementById("shoePrice").innerText=currentProduct.price;
 
-  document.getElementById("productPrice").innerText =
-  currentProduct.price;
-
-  document.getElementById("shoePrice").innerText =
-  currentProduct.price;
-
-  document.getElementById("thumb1").onclick=()=>{
-    document.getElementById("mainImage").src=
-    "images/nassim01.png";
-  };
-
-  document.getElementById("thumb2").onclick=()=>{
-    document.getElementById("mainImage").src=
-    "images/nassim02.png";
-  };
-
-  buildSizes(colorProducts);
-
-  updateTotal();
-
+buildSizes(items);
+updateTotal();
 }
 
+/* SIZES */
 function buildSizes(items){
 
-  const sizesDiv =
-  document.getElementById("sizes");
+const div=document.getElementById("sizes");
+div.innerHTML="";
 
-  sizesDiv.innerHTML="";
+items.forEach(item=>{
+const btn=document.createElement("button");
+btn.className="size-btn";
+btn.textContent=item.size;
+btn.onclick=()=>selectSize(item);
+div.appendChild(btn);
+});
 
-  items.forEach(item=>{
-
-    const btn=
-    document.createElement("button");
-
-    btn.className="size-btn";
-
-    btn.textContent=item.size;
-
-    btn.onclick=()=>selectSize(item);
-
-    sizesDiv.appendChild(btn);
-
-  });
-
-  if(items.length){
-    selectSize(items[0]);
-  }
-
+if(items.length) selectSize(items[0]);
 }
 
 function selectSize(item){
 
-  currentProduct=item;
+currentProduct=item;
+currentSize=item.size;
 
-  currentSize=item.size;
+document.querySelectorAll(".size-btn").forEach(b=>{
+b.classList.toggle("active",b.textContent==item.size);
+});
 
-  document
-  .querySelectorAll(".size-btn")
-  .forEach(btn=>{
+document.getElementById("stockQty").innerText=item.qty;
+document.getElementById("productPrice").innerText=item.price;
+document.getElementById("shoePrice").innerText=item.price;
 
-    btn.classList.toggle(
-      "active",
-      btn.textContent==item.size
-    );
-
-  });
-
-  document.getElementById("stockQty").innerText =
-  item.qty;
-
-  document.getElementById("productPrice").innerText =
-  item.price;
-
-  document.getElementById("shoePrice").innerText =
-  item.price;
-
-  updateTotal();
-
+updateTotal();
 }
 
+/* DELIVERY */
 function buildWilayas(){
 
-  const select=
-  document.getElementById("wilaya");
+const select=document.getElementById("wilaya");
+select.innerHTML='<option value="">اختر الولاية</option>';
 
-  select.innerHTML=
-  '<option value="">اختر الولاية</option>';
-
-  DELIVERY.forEach(item=>{
-
-    const option=
-    document.createElement("option");
-
-    option.value=item.wilaya;
-
-    option.textContent=item.wilaya;
-
-    select.appendChild(option);
-
-  });
-
+DELIVERY.forEach(d=>{
+const opt=document.createElement("option");
+opt.value=d.wilaya;
+opt.textContent=d.wilaya;
+select.appendChild(opt);
+});
 }
 
-document
-.getElementById("wilaya")
-.addEventListener(
-  "change",
-  updateTotal
-);
-
-document
-.querySelectorAll(
-  'input[name="delivery"]'
-)
-.forEach(radio=>{
-
-  radio.addEventListener(
-    "change",
-    updateTotal
-  );
-
+document.getElementById("wilaya").addEventListener("change",updateTotal);
+document.querySelectorAll('input[name="delivery"]').forEach(r=>{
+r.addEventListener("change",updateTotal);
 });
 
 function getShippingPrice(){
 
-  const wilaya =
-  document.getElementById("wilaya").value;
+const wilaya=document.getElementById("wilaya").value;
+if(!wilaya) return 0;
 
-  if(!wilaya) return 0;
+const type=document.querySelector('input[name="delivery"]:checked').value;
+const row=DELIVERY.find(x=>x.wilaya===wilaya);
 
-  const deliveryType =
-  document.querySelector(
-    'input[name="delivery"]:checked'
-  ).value;
+if(!row) return 0;
 
-  const row =
-  DELIVERY.find(
-    x => x.wilaya === wilaya
-  );
-
-  if(!row) return 0;
-
-  return deliveryType === "home"
-    ? Number(row.home)
-    : Number(row.office);
-
+return type==="home"?Number(row.home):Number(row.office);
 }
 
 function updateTotal(){
 
-  if(!currentProduct) return;
+if(!currentProduct) return;
 
-  const shoePrice =
-  Number(currentProduct.price);
+const shipping=getShippingPrice();
+const total=Number(currentProduct.price)+shipping;
 
-  const shippingPrice =
-  getShippingPrice();
-
-  const total =
-  shoePrice + shippingPrice;
-
-  document.getElementById(
-    "shippingPrice"
-  ).innerText = shippingPrice;
-
-  document.getElementById(
-    "totalPrice"
-  ).innerText = total;
-
+document.getElementById("shippingPrice").innerText=shipping;
+document.getElementById("totalPrice").innerText=total;
 }
 
+/* SEND ORDER */
 async function sendOrder(){
 
-  const fullName =
-  document
-  .getElementById("fullName")
-  .value
-  .trim();
+const fullName=document.getElementById("fullName").value.trim();
+const phone=document.getElementById("phone").value.trim();
+const wilaya=document.getElementById("wilaya").value;
 
-  const phone =
-  document
-  .getElementById("phone")
-  .value
-  .trim();
+if(!fullName||!phone||!wilaya||!currentProduct){
+alert("أكمل المعلومات");
+return;
+}
 
-  const wilaya =
-  document
-  .getElementById("wilaya")
-  .value;
+const shipping=getShippingPrice();
+const total=Number(currentProduct.price)+shipping;
 
-  const deliveryType =
-  document.querySelector(
-    'input[name="delivery"]:checked'
-  ).value;
+const payload={
+id:currentProduct.id,
+fullName,
+phone,
+wilaya,
+productName:currentProduct.name,
+color:currentProduct.color,
+size:currentProduct.size,
+price:currentProduct.price,
+shippingPrice:shipping,
+total
+};
 
-  if(!fullName){
+try{
 
-    alert("أدخل الاسم الكامل");
+const res=await fetch("/api/send",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify(payload)
+});
 
-    return;
+const result=await res.json();
 
-  }
+if(result.ok){
 
-  if(!phone){
+const box=document.getElementById("success");
+box.style.display="block";
+box.innerHTML="✔ تم إرسال الطلب بنجاح";
 
-    alert("أدخل رقم الهاتف");
+}else{
+alert("فشل الإرسال");
+}
 
-    return;
-
-  }
-
-  if(!wilaya){
-
-    alert("اختر الولاية");
-
-    return;
-
-  }
-
-  if(!currentProduct){
-
-    alert("اختر المقاس");
-
-    return;
-
-  }
-
-  if(Number(currentProduct.qty) <= 0){
-
-    alert("هذا المقاس غير متوفر");
-
-    return;
-
-  }
-
-  const shippingPrice =
-  getShippingPrice();
-
-  const total =
-  Number(currentProduct.price)
-  + shippingPrice;
-
-  const payload = {
-
-    id: currentProduct.id,
-
-    fullName,
-
-    phone,
-
-    wilaya,
-
-    deliveryType,
-
-    productName:
-    currentProduct.name,
-
-    color:
-    currentProduct.color,
-
-    size:
-    currentProduct.size,
-
-    price:
-    currentProduct.price,
-
-    shippingPrice,
-
-    total
-
-  };
-
-  try{
-
-    const response =
-    await fetch("/api/send",{
-
-      method:"POST",
-
-      headers:{
-        "Content-Type":
-        "application/json"
-      },
-
-      body:
-      JSON.stringify(payload)
-
-    });
-
-    const result =
-    await response.json();
-
-    if(result.ok){
-
-      document
-      .getElementById("success")
-      .style.display="block";
-
-      document
-      .getElementById("success")
-      .innerHTML =
-
-      "✔ تم إرسال الطلب بنجاح<br><br>رقم الطلب: "
-      + result.orderNumber;
-
-      document
-      .getElementById("fullName")
-      .value="";
-
-      document
-      .getElementById("phone")
-      .value="";
-
-    }else{
-
-      alert(
-        result.error ||
-        "فشل إرسال الطلب"
-      );
-
-    }
-
-  }catch(err){
-
-    alert(
-      "تعذر الاتصال بالخادم"
-    );
-
-    console.log(err);
-
-  }
-
+}catch(e){
+alert("خطأ في الاتصال");
+}
 }
 
 loadData();
