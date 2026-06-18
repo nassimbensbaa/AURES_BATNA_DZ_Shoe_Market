@@ -1,3 +1,7 @@
+function getAPI() {
+  return document.getElementById("app").dataset.api;
+}
+
 async function order(id, name) {
 
   const qty = document.getElementById("q" + id).value;
@@ -19,10 +23,16 @@ async function order(id, name) {
     total: 0
   };
 
-  await fetch(window.GOOGLE_SCRIPT_URL, {
-    method: "POST",
-    body: JSON.stringify(data)
-  });
+  try {
+    await fetch(getAPI(), {
+      method: "POST",
+      body: JSON.stringify(data)
+    });
 
-  alert("تم إرسال الطلب ✅");
+    alert("تم إرسال الطلب بنجاح ✅");
+
+  } catch (err) {
+    console.error("Order error:", err);
+    alert("خطأ في إرسال الطلب ❌");
+  }
 }
