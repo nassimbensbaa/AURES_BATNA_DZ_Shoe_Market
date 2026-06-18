@@ -9,7 +9,7 @@
 body{
 margin:0;
 font-family:Arial;
-background:#f5f6f8;
+background:#f4f6f8;
 }
 
 header{
@@ -28,65 +28,76 @@ margin:auto;
 padding:15px;
 }
 
-.product-box{
+.card{
 background:#fff;
 border-radius:15px;
-padding:15px;
-box-shadow:0 3px 15px rgba(0,0,0,0.1);
+box-shadow:0 5px 20px rgba(0,0,0,0.08);
+overflow:hidden;
 }
 
 .main-img{
 width:100%;
 height:320px;
 object-fit:contain;
-border-radius:10px;
 background:#fff;
+}
+
+.content{
+padding:15px;
+}
+
+.title{
+font-size:20px;
+font-weight:bold;
+}
+
+.price{
+margin:10px 0;
+font-size:18px;
+color:#111;
+font-weight:bold;
 }
 
 .colors{
 display:flex;
 gap:8px;
-margin-top:10px;
 flex-wrap:wrap;
+margin:10px 0;
 }
 
 .color-btn{
-padding:6px 10px;
+padding:6px 12px;
+border-radius:20px;
 border:1px solid #ddd;
-border-radius:8px;
 cursor:pointer;
 background:#eee;
 }
 
-.form{
-margin-top:15px;
-display:flex;
-flex-direction:column;
-gap:8px;
-}
-
 input,select{
+width:100%;
 padding:10px;
-border-radius:8px;
+margin-top:8px;
+border-radius:10px;
 border:1px solid #ddd;
 }
 
-.price-box{
+.btn{
+width:100%;
+padding:12px;
+margin-top:10px;
+background:#111;
+color:#fff;
+border:none;
+border-radius:12px;
+cursor:pointer;
+}
+
+.delivery-box{
 margin-top:10px;
 padding:10px;
 background:#f1f1f1;
-border-radius:8px;
-font-weight:bold;
-}
-
-.btn{
-background:#111;
-color:#fff;
-padding:12px;
-border:none;
 border-radius:10px;
-cursor:pointer;
-margin-top:10px;
+font-weight:bold;
 }
 </style>
 </head>
@@ -99,15 +110,17 @@ margin-top:10px;
 
 <div class="container">
 
-<div class="product-box">
+<div class="card">
 
 <img id="img" class="main-img">
 
-<h2 id="name"></h2>
+<div class="content">
 
-<div id="colors" class="colors"></div>
+<div class="title" id="name"></div>
 
-<div class="form">
+<div class="price" id="price"></div>
+
+<div class="colors" id="colors"></div>
 
 <input id="fullName" placeholder="الاسم الكامل">
 <input id="phone" placeholder="رقم الهاتف">
@@ -119,7 +132,7 @@ margin-top:10px;
 <option value="office">مكتب</option>
 </select>
 
-<div class="price-box" id="price">التوصيل: 0 دج</div>
+<div class="delivery-box" id="delivery">التوصيل: 0 دج</div>
 
 <button class="btn" onclick="send()">تأكيد الطلب</button>
 
@@ -143,7 +156,6 @@ DELIVERY = await fetch("/api/delivery").then(r=>r.json())
 current = PRODUCTS[0]
 
 render()
-
 loadWilaya()
 
 }
@@ -152,24 +164,27 @@ function render(){
 
 document.getElementById("img").src = current.image
 document.getElementById("name").innerText = current.name
+document.getElementById("price").innerText = "السعر: " + current.price + " دج"
 
 let colors = PRODUCTS.filter(p=>p.id==current.id)
 
 document.getElementById("colors").innerHTML =
 colors.map(c=>`
-<button class="color-btn" onclick="change('${c.image}','${c.color}')">
+<button class="color-btn" onclick="change('${c.image}','${c.color}',${c.price})">
 ${c.color}
 </button>
 `).join("")
 
 }
 
-function change(img,color){
+function change(img,color,price){
 
 current.image = img
 current.color = color
+current.price = price
 
 document.getElementById("img").src = img
+document.getElementById("price").innerText = "السعر: " + price + " دج"
 
 }
 
@@ -187,27 +202,27 @@ document.getElementById("type").onchange = calc
 
 function calc(){
 
-let w = document.getElementById("wilaya").value
-let t = document.getElementById("type").value
+let w=document.getElementById("wilaya").value
+let t=document.getElementById("type").value
 
-let d = DELIVERY.find(x=>x.name==w)
-if(!d) return
+let d=DELIVERY.find(x=>x.name==w)
+if(!d)return
 
-let price = t=="home"?d.home:d.office
+let price=t=="home"?d.home:d.office
 
-document.getElementById("price").innerText =
-"التوصيل: "+price+" دج"
+document.getElementById("delivery").innerText =
+"التوصيل: " + price + " دج"
 
 }
 
 async function send(){
 
-let w = document.getElementById("wilaya").value
-let t = document.getElementById("type").value
+let w=document.getElementById("wilaya").value
+let t=document.getElementById("type").value
 
-let d = DELIVERY.find(x=>x.name==w)
+let d=DELIVERY.find(x=>x.name==w)
 
-let price = t=="home"?d.home:d.office
+let deliveryPrice = t=="home"?d.home:d.office
 
 await fetch("/api/send",{
 method:"POST",
@@ -221,9 +236,8 @@ fullName:document.getElementById("fullName").value,
 phone:document.getElementById("phone").value,
 wilaya:w,
 deliveryType:t,
-deliveryPrice:price,
-productPrice:0,
-total:price,
+productPrice:current.price,
+deliveryPrice:deliveryPrice,
 qty:1
 })
 })
