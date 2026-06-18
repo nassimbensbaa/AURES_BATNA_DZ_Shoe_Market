@@ -2,108 +2,18 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>متجر الأحذية DZ</title>
+<title>متجر الأحذية</title>
 
 <style>
-body{
-margin:0;
-font-family:Arial;
-background:#f6f6f6;
-}
+body{font-family:Arial;margin:0;background:#f5f5f5}
+header{text-align:center;background:#111;color:#fff;padding:10px}
+img{max-width:100%}
 
-header{
-background:#111;
-color:#fff;
-text-align:center;
-padding:15px;
-font-size:20px;
-}
+.container{max-width:500px;margin:auto;padding:10px;background:#fff}
 
-.container{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-gap:12px;
-padding:15px;
-}
-
-.card{
-background:#fff;
-border-radius:12px;
-overflow:hidden;
-box-shadow:0 2px 10px rgba(0,0,0,0.08);
-}
-
-.card img{
-width:100%;
-height:220px;
-object-fit:cover;
-background:#fff;
-}
-
-.content{
-padding:10px;
-}
-
-.title{
-font-weight:bold;
-margin-bottom:5px;
-}
-
-.colors{
-display:flex;
-gap:5px;
-flex-wrap:wrap;
-margin:8px 0;
-}
-
-.color{
-padding:5px 8px;
-font-size:12px;
-background:#eee;
-border-radius:6px;
-cursor:pointer;
-border:1px solid #ddd;
-}
-
-.btn{
-width:100%;
-padding:10px;
-background:#111;
-color:#fff;
-border:none;
-cursor:pointer;
-border-radius:8px;
-margin-top:8px;
-}
-
-/* modal */
-.modal{
-display:none;
-position:fixed;
-inset:0;
-background:rgba(0,0,0,0.5);
-justify-content:center;
-align-items:center;
-}
-
-.modal-box{
-background:#fff;
-padding:20px;
-border-radius:10px;
-width:90%;
-max-width:400px;
-}
-
-select{
-width:100%;
-padding:10px;
-margin:5px 0;
-}
-
-.price{
-margin:10px 0;
-font-weight:bold;
+.colors button{
+margin:5px;
+padding:5px 10px;
 }
 </style>
 </head>
@@ -111,16 +21,18 @@ font-weight:bold;
 <body>
 
 <header>
-👟 متجر الأحذية DZ
+<img src="images/logo.png" style="height:60px">
 </header>
 
-<div class="container" id="products"></div>
+<div class="container">
 
-<!-- ORDER -->
-<div class="modal" id="modal">
-<div class="modal-box">
+<img id="mainImg" src="">
 
-<h3>إتمام الطلب</h3>
+<h3 id="name"></h3>
+
+<div id="colors"></div>
+
+<input id="fullName" placeholder="الاسم الكامل"><br><br>
 
 <select id="wilaya"></select>
 
@@ -129,133 +41,96 @@ font-weight:bold;
 <option value="office">مكتب</option>
 </select>
 
-<div class="price" id="deliveryPrice">التوصيل: 0 دج</div>
+<button onclick="send()">تأكيد الطلب</button>
 
-<button class="btn" onclick="sendOrder()">تأكيد الطلب</button>
-
-</div>
 </div>
 
 <script>
 
-let PRODUCTS=[];
-let DELIVERY=[];
-let SELECTED=null;
+let PRODUCTS=[]
+let DELIVERY=[]
+let selected=null
 
-/* LOAD */
 async function load(){
 
-PRODUCTS = await fetch("/api/products").then(r=>r.json());
-DELIVERY = await fetch("/api/delivery").then(r=>r.json());
+PRODUCTS = await fetch("/api/products").then(r=>r.json())
+DELIVERY = await fetch("/api/delivery").then(r=>r.json())
 
-render();
+showProduct()
+
+loadWilaya()
 
 }
 
-/* RENDER */
-function render(){
+function showProduct(){
 
-let html="";
+selected = PRODUCTS[0]
 
-PRODUCTS.forEach((p,i)=>{
+document.getElementById("mainImg").src = selected.image
+
+document.getElementById("name").innerText = selected.name
+
+let html=""
+
+PRODUCTS.forEach(p=>{
 
 html+=`
-<div class="card">
-
-<img id="img-${i}" src="${p.image}">
-
-<div class="content">
-
-<div class="title">${p.name}</div>
-
-<div>اللون: ${p.color}</div>
-
-<div class="colors">
-<button class="color" onclick="changeImg(${i},'${p.image}')">
+<button onclick="change('${p.image}','${p.color}')">
 ${p.color}
 </button>
-</div>
+`
 
-<button class="btn" onclick="openOrder(${i})">
-اطلب الآن
-</button>
+})
 
-</div>
-
-</div>
-`;
-
-});
-
-document.getElementById("products").innerHTML=html;
+document.getElementById("colors").innerHTML=html
 
 }
 
-/* CHANGE IMAGE */
-function changeImg(i,img){
-document.getElementById("img-"+i).src = img;
+function change(img,color){
+
+document.getElementById("mainImg").src = img
+
+selected.image = img
+
+selected.color = color
+
 }
 
-/* OPEN ORDER */
-function openOrder(i){
+function loadWilaya(){
 
-SELECTED = PRODUCTS[i];
-
-document.getElementById("modal").style.display="flex";
-
-let options="";
+let html=""
 
 DELIVERY.forEach(d=>{
-options+=`<option value="${d.wilaya}">${d.wilaya}</option>`;
-});
+html+=`<option value="${d.wilaya}">${d.wilaya}</option>`
+})
 
-document.getElementById("wilaya").innerHTML=options;
-
-}
-
-/* CALC */
-document.getElementById("wilaya").onchange =
-document.getElementById("type").onchange = calc;
-
-function calc(){
-
-let w=document.getElementById("wilaya").value;
-let t=document.getElementById("type").value;
-
-let d=DELIVERY.find(x=>x.wilaya==w);
-if(!d)return;
-
-let price = t=="home"?d.home:d.office;
-
-document.getElementById("deliveryPrice").innerText=
-"التوصيل: "+price+" دج";
+document.getElementById("wilaya").innerHTML=html
 
 }
 
-/* SEND */
-async function sendOrder(){
+async function send(){
+
+let wilaya=document.getElementById("wilaya").value
+let type=document.getElementById("type").value
 
 await fetch("/api/send",{
 method:"POST",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify({
-productId:SELECTED.id,
-productName:SELECTED.name,
-color:SELECTED.color,
-size:SELECTED.size,
-wilaya:document.getElementById("wilaya").value,
-type:document.getElementById("type").value,
+productId:selected.id,
+productName:selected.name,
+color:selected.color,
+wilaya:wilaya,
+type:type,
 qty:1
 })
-});
+})
 
-alert("تم إرسال الطلب ✅");
-
-document.getElementById("modal").style.display="none";
+alert("تم الطلب")
 
 }
 
-load();
+load()
 
 </script>
 
