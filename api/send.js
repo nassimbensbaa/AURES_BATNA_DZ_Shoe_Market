@@ -1,13 +1,10 @@
+async function order(id, name) {
 
-const GOOGLE_SCRIPT_URL = "PUT_YOUR_SCRIPT_URL_HERE";
-
-async function order(productId, productName) {
-
-  const qty = document.getElementById("q" + productId).value;
+  const qty = document.getElementById("q" + id).value;
 
   const data = {
-    productId,
-    productName,
+    productId: id,
+    productName: name,
     qty: Number(qty),
 
     fullName: prompt("الاسم الكامل"),
@@ -15,17 +12,17 @@ async function order(productId, productName) {
     color: prompt("اللون"),
     size: prompt("المقاس"),
     wilaya: prompt("الولاية"),
-    deliveryType: prompt("التوصيل (home / office)"),
+    deliveryType: prompt("home / office"),
 
     productPrice: 0,
     deliveryPrice: 0,
     total: 0
   };
 
-  await fetch(GOOGLE_SCRIPT_URL, {
+  await fetch(window.GOOGLE_SCRIPT_URL, {
     method: "POST",
     body: JSON.stringify(data)
   });
 
-  alert("تم إرسال الطلب بنجاح ✅");
+  alert("تم إرسال الطلب ✅");
 }
