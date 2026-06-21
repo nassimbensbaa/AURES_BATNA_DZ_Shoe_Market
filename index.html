@@ -15,11 +15,10 @@
 
     body {
       background: #ffffff;
-      /* خلفية بيضاء بالكامل */
       color: #1e1e1e;
     }
 
-    /* ---- HEADER: خلفية بيضاء، شعار ممدود ---- */
+    /* HEADER: خلفية بيضاء، شعار ممدود */
     header {
       background: #ffffff;
       text-align: center;
@@ -44,19 +43,18 @@
       object-fit: contain;
     }
 
-    /* إخفاء النص "AURES BATNA DZ" و "بليغة في الواعر" نهائياً */
     header h1,
     header p {
       display: none;
     }
 
-    /* ---- container ---- */
     .container {
-      max-width: 900px;
+      max-width: 950px;
       margin: auto;
       padding: 15px;
     }
 
+    /* تكبير الصورة بشكل ملحوظ */
     .viewer {
       background: #fff;
       border-radius: 15px;
@@ -66,7 +64,8 @@
 
     .viewer img {
       width: 100%;
-      height: 420px;
+      height: 520px;
+      /* زيادة الارتفاع لتكبير الصورة */
       object-fit: contain;
       background: #fff;
     }
@@ -110,7 +109,7 @@
       margin-bottom: 6px;
     }
 
-    /* ---- ميزات المنتج (أيقونات + نص) ---- */
+    /* ===== ميزات المنتج بأيقونات متجهة (Fabric feature icons) ===== */
     .product-badges {
       display: flex;
       flex-wrap: wrap;
@@ -131,12 +130,35 @@
       color: #1e1e1e;
     }
 
-    .badge-item span {
-      font-size: 22px;
-      line-height: 1;
+    /* أيقونات متجهة (رمزية) بدلاً من الإيموجي */
+    .badge-item .icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      background: #111;
+      color: #fff;
+      border-radius: 50%;
+      font-size: 16px;
+      font-weight: 700;
+      flex-shrink: 0;
     }
 
-    /* السعر */
+    /* ألوان مميزة لكل أيقونة */
+    .badge-item:nth-child(1) .icon {
+      background: #2c3e50;
+    }
+    .badge-item:nth-child(2) .icon {
+      background: #16a085;
+    }
+    .badge-item:nth-child(3) .icon {
+      background: #e67e22;
+    }
+    .badge-item:nth-child(4) .icon {
+      background: #8e44ad;
+    }
+
     .price {
       font-size: 30px;
       font-weight: 800;
@@ -144,7 +166,6 @@
       margin-bottom: 18px;
     }
 
-    /* الألوان */
     .colors {
       display: flex;
       gap: 10px;
@@ -211,42 +232,84 @@
       opacity: .9;
     }
 
-    /* ميزات "لماذا تختار هذا المنتج؟" مع إيموجي */
+    /* ===== ميزات "لماذا تختار هذا المنتج؟" بأيقونات متجهة ===== */
     .features {
       margin-top: 20px;
       background: #fff;
-      padding: 20px;
+      padding: 20px 24px;
       border-radius: 15px;
       box-shadow: 0 2px 12px rgba(0, 0, 0, .05);
       border: 1px solid #f0f0f0;
     }
 
     .features h3 {
-      margin-bottom: 10px;
+      margin-bottom: 14px;
       font-size: 22px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .features h3 .icon-star {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      background: #f39c12;
+      color: #fff;
+      border-radius: 50%;
+      font-size: 18px;
+      font-weight: 700;
     }
 
     .features ul {
       list-style: none;
-      line-height: 2.2;
+      line-height: 2.4;
       font-size: 17px;
     }
 
     .features ul li {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
+      padding: 4px 0;
+      border-bottom: 1px solid #f5f5f5;
     }
 
-    .features ul li::before {
-      content: "✅";
-      font-size: 22px;
-      margin-left: 6px;
+    .features ul li:last-child {
+      border-bottom: none;
     }
 
-    /* إزالة الرموز الافتراضية مع الاحتفاظ بالإيموجي */
-    .features ul li {
-      list-style: none;
+    /* أيقونات متجهة دائرية لكل عنصر */
+    .features ul li .feat-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #2c3e50;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .features ul li:nth-child(1) .feat-icon {
+      background: #2980b9;
+    }
+    .features ul li:nth-child(2) .feat-icon {
+      background: #27ae60;
+    }
+    .features ul li:nth-child(3) .feat-icon {
+      background: #8e44ad;
+    }
+    .features ul li:nth-child(4) .feat-icon {
+      background: #e67e22;
+    }
+    .features ul li:nth-child(5) .feat-icon {
+      background: #c0392b;
     }
 
     footer {
@@ -298,6 +361,10 @@
       .logo-wrapper {
         padding: 0 6px;
       }
+      .viewer img {
+        height: 380px;
+        /* تكبير معقول على الموبايل */
+      }
       .product-badges {
         gap: 8px 12px;
         padding: 12px 14px;
@@ -305,25 +372,24 @@
       .badge-item {
         font-size: 14px;
       }
-      .badge-item span {
-        font-size: 20px;
+      .features ul {
+        font-size: 15px;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- HEADER: خلفية بيضاء، شعار فقط (النص محذوف) -->
+  <!-- HEADER: شعار فقط -->
   <header>
     <div class="logo-wrapper">
-      <img src="images/logo.png.gif" alt="AURES BATNA DZ" class="logo">
+      <img src="images/logo.png" alt="AURES BATNA DZ" class="logo">
     </div>
-    <!-- تم إخفاء h1 و p عبر CSS -->
   </header>
 
   <div class="container">
 
-    <!-- الصورة الرئيسية -->
+    <!-- الصورة الرئيسية (مكبرة) -->
     <div class="viewer">
       <img id="mainImage" src="images/nassim05.gif.gif" alt="صورة المنتج">
     </div>
@@ -341,12 +407,12 @@
     <div class="card">
       <div class="product-name">حذاء AURES BATNA DZ</div>
 
-      <!-- ===== ميزات المنتج (أيقونات + نص) ===== -->
+      <!-- ===== ميزات المنتج بأيقونات متجهة ===== -->
       <div class="product-badges">
-        <div class="badge-item"><span>🛡️</span> مضاد للتعرف</div>
-        <div class="badge-item"><span>🪶</span> خفيف ومريح</div>
-        <div class="badge-item"><span>⛰️</span> نعل مانع للانزلاق</div>
-        <div class="badge-item"><span>✨</span> راحة فائقة</div>
+        <div class="badge-item"><span class="icon">🛡</span> مضاد للتعرف</div>
+        <div class="badge-item"><span class="icon">⚡</span> خفيف ومريح</div>
+        <div class="badge-item"><span class="icon">⛰</span> نعل مانع للانزلاق</div>
+        <div class="badge-item"><span class="icon">✦</span> راحة فائقة</div>
       </div>
 
       <!-- السعر -->
@@ -407,15 +473,15 @@
       <button class="order-btn" onclick="sendOrder()">اطلب الآن</button>
     </div>
 
-    <!-- ===== ميزات "لماذا تختار هذا المنتج؟" مع إيموجي ===== -->
+    <!-- ===== لماذا تختار هذا المنتج؟ بأيقونات متجهة ===== -->
     <div class="features">
-      <h3>🌟 لماذا تختار هذا المنتج؟</h3>
+      <h3><span class="icon-star">★</span> لماذا تختار هذا المنتج؟</h3>
       <ul>
-        <li>خامة عالية الجودة</li>
-        <li>مريح للمشي اليومي</li>
-        <li>تصميم عصري وأنيق</li>
-        <li>الدفع عند الاستلام</li>
-        <li>التوصيل إلى 69 ولاية</li>
+        <li><span class="feat-icon">✔</span> خامة عالية الجودة</li>
+        <li><span class="feat-icon">✔</span> مريح للمشي اليومي</li>
+        <li><span class="feat-icon">✔</span> تصميم عصري وأنيق</li>
+        <li><span class="feat-icon">✔</span> الدفع عند الاستلام</li>
+        <li><span class="feat-icon">✔</span> التوصيل إلى 69 ولاية</li>
       </ul>
     </div>
 
