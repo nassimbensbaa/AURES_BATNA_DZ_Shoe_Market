@@ -23,7 +23,6 @@ color:#222;
 min-height:100vh;
 }
 
-/* شريط علوي متطور */
 header{
 background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
 color:#fff;
@@ -90,7 +89,6 @@ margin:auto;
 padding:20px 15px;
 }
 
-/* عرض الصورة الرئيسية - تكبير الصورة */
 .viewer{
 background:#fff;
 border-radius:20px;
@@ -106,18 +104,17 @@ box-shadow:0 15px 50px rgba(0,0,0,0.18);
 
 .viewer img{
 width:100%;
-height:550px; /* زيادة الارتفاع لجعل الصورة أكبر */
+height:550px;
 object-fit:contain;
 background:linear-gradient(135deg, #fafafa 0%, #f0f0f0 100%);
-padding:15px; /* زيادة المسافة الداخلية */
+padding:15px;
 }
 
-/* الصور المصغرة - تكبيرها */
 .thumbs{
 display:flex;
-gap:15px; /* زيادة المسافة بين الصور */
+gap:15px;
 overflow-x:auto;
-padding:18px; /* زيادة المسافة الداخلية */
+padding:18px;
 background:linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
 margin-top:15px;
 border-radius:20px;
@@ -126,7 +123,7 @@ scroll-behavior:smooth;
 }
 
 .thumbs::-webkit-scrollbar{
-height:8px; /* زيادة ارتفاع شريط التمرير */
+height:8px;
 }
 
 .thumbs::-webkit-scrollbar-track{
@@ -140,10 +137,10 @@ border-radius:10px;
 }
 
 .thumbs img{
-width:120px; /* زيادة العرض */
-height:120px; /* زيادة الارتفاع */
+width:120px;
+height:120px;
 object-fit:cover;
-border-radius:14px; /* زيادة الزوايا */
+border-radius:14px;
 cursor:pointer;
 border:3px solid transparent;
 transition:all 0.3s ease;
@@ -152,11 +149,10 @@ flex-shrink:0;
 
 .thumbs img:hover{
 border-color:#f7c948;
-transform:scale(1.1); /* تكبير عند المرور */
+transform:scale(1.1);
 box-shadow:0 8px 25px rgba(247,201,72,0.4);
 }
 
-/* البطاقة */
 .card{
 background:linear-gradient(135deg, #ffffff 0%, #fcfcfc 100%);
 margin-top:20px;
@@ -188,7 +184,44 @@ background:rgba(229,57,53,0.05);
 border-radius:12px;
 }
 
-/* الألوان */
+/* رسالة المخزون */
+.stock-message{
+padding:12px 18px;
+border-radius:12px;
+margin-bottom:15px;
+font-weight:700;
+display:none;
+font-size:15px;
+}
+
+.stock-message.show{
+display:block;
+}
+
+.stock-message.error{
+background:#fee;
+color:#c0392b;
+border:2px solid #e74c3c;
+}
+
+.stock-message.success{
+background:#e8f8f0;
+color:#27ae60;
+border:2px solid #2ecc71;
+}
+
+.stock-message.warning{
+background:#fff8e1;
+color:#f39c12;
+border:2px solid #f1c40f;
+}
+
+.stock-message .suggestions{
+margin-top:8px;
+font-weight:600;
+color:#2980b9;
+}
+
 .colors{
 display:flex;
 gap:12px;
@@ -205,9 +238,10 @@ background:#f0f0f0;
 font-weight:700;
 transition:all 0.3s ease;
 font-size:15px;
+position:relative;
 }
 
-.color-btn:hover{
+.color-btn:hover:not(.out-of-stock){
 transform:translateY(-2px);
 box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
@@ -220,7 +254,34 @@ box-shadow:0 5px 20px rgba(0,0,0,0.2);
 transform:translateY(-2px);
 }
 
-/* الحقول */
+.color-btn.out-of-stock{
+opacity:0.5;
+cursor:not-allowed;
+text-decoration:line-through;
+background:#f0f0f0;
+color:#999;
+}
+
+.color-btn .stock-badge{
+position:absolute;
+top:-8px;
+right:-8px;
+background:#e74c3c;
+color:#fff;
+border-radius:50%;
+width:24px;
+height:24px;
+font-size:11px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:700;
+}
+
+.color-btn.in-stock .stock-badge{
+background:#27ae60;
+}
+
 .form-group{
 margin-bottom:16px;
 }
@@ -257,7 +318,11 @@ select:hover{
 border-color:#ddd;
 }
 
-/* الأسعار */
+select option.out-of-stock-option{
+color:#999;
+background:#f5f5f5;
+}
+
 .summary{
 background:linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
 padding:20px;
@@ -281,7 +346,6 @@ font-size:20px;
 color:#e53935;
 }
 
-/* زر الطلب */
 .order-btn{
 width:100%;
 padding:18px;
@@ -314,7 +378,7 @@ transition:left 0.5s;
 left:100%;
 }
 
-.order-btn:hover{
+.order-btn:hover:not(:disabled){
 transform:translateY(-3px);
 box-shadow:0 10px 30px rgba(0,0,0,0.25);
 background:linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
@@ -324,7 +388,12 @@ background:linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
 transform:translateY(0);
 }
 
-/* المميزات */
+.order-btn:disabled{
+opacity:0.5;
+cursor:not-allowed;
+transform:none !important;
+}
+
 .features{
 margin-top:25px;
 background:linear-gradient(135deg, #ffffff 0%, #fcfcfc 100%);
@@ -359,7 +428,6 @@ gap:10px;
 border-bottom:none;
 }
 
-/* footer */
 footer{
 margin-top:30px;
 background:linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
@@ -385,7 +453,6 @@ opacity:0.6;
 font-size:14px;
 }
 
-/* popup */
 .modal{
 display:none;
 position:fixed;
@@ -445,22 +512,46 @@ transform:translateY(-2px);
 box-shadow:0 8px 25px rgba(0,0,0,0.2);
 }
 
-/* تحسينات للجوال */
+/* مؤقت التحميل */
+.loading-spinner {
+    display: none;
+    text-align: center;
+    padding: 20px;
+}
+
+.loading-spinner.show {
+    display: block;
+}
+
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #f7c948;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 @media (max-width:600px){
 header h1{font-size:26px;}
 header p{font-size:16px;}
-.viewer img{height:380px;} /* تكبير في الجوال أيضاً */
+.viewer img{height:380px;}
 padding:10px;
 .product-name{font-size:24px;}
 .price{font-size:28px;}
 .card{padding:18px;}
-.thumbs img{width:90px;height:90px;} /* تكبير في الجوال */
+.thumbs img{width:90px;height:90px;}
 .summary div{font-size:14px;}
 .summary div:last-child{font-size:17px;}
 .order-btn{font-size:17px;padding:15px;}
 }
 
-/* تحسينات للشاشات المتوسطة */
 @media (min-width:601px) and (max-width:1024px){
 .viewer img{height:480px;}
 .thumbs img{width:100px;height:100px;}
@@ -483,12 +574,10 @@ padding:10px;
 
 <div class="container">
 
-<!-- الصورة الرئيسية -->
 <div class="viewer">
 <img id="mainImage" src="images/nassim05.gif.gif">
 </div>
 
-<!-- الصور المصغرة -->
 <div class="thumbs">
 
 <img src="images/nassim05.gif.gif"
@@ -508,7 +597,6 @@ onclick="changeImage(this.src)">
 
 </div>
 
-<!-- المنتج -->
 <div class="card">
 
 <div class="product-name">
@@ -519,40 +607,34 @@ onclick="changeImage(this.src)">
 1900 دج
 </div>
 
+<!-- مؤقت التحميل -->
+<div id="loadingSpinner" class="loading-spinner">
+    <div class="spinner"></div>
+    <p style="margin-top:10px;color:#666;">جاري تحميل بيانات المخزون...</p>
+</div>
+
+<!-- رسالة المخزون -->
+<div id="stockMessage" class="stock-message"></div>
+
 <h3>الألوان المتوفرة</h3>
 
-<div class="colors">
-
-<button class="color-btn active"
-onclick="selectColor(this,'بني')">
-بني
-</button>
-
-<button class="color-btn"
-onclick="selectColor(this,'رمادي')">
-رمادي
-</button>
-
-<button class="color-btn"
-onclick="selectColor(this,'أزرق')">
-أزرق
-</button>
-
+<div class="colors" id="colorContainer">
+    <!-- سيتم إنشاء الأزرار ديناميكياً من بيانات Google Sheet -->
 </div>
 
 <div class="form-group">
 <label>المقاس</label>
 
-<select id="size">
+<select id="size" onchange="checkStock()">
 
 <option value="">اختر المقاس</option>
 
-<option>40</option>
-<option>41</option>
-<option>42</option>
-<option>43</option>
-<option>44</option>
-<option>45</option>
+<option value="40">40</option>
+<option value="41">41</option>
+<option value="42">42</option>
+<option value="43">43</option>
+<option value="44">44</option>
+<option value="45">45</option>
 
 </select>
 
@@ -641,6 +723,7 @@ placeholder="مثال: مكتب باتنة وسط">
 
 <button
 class="order-btn"
+id="orderBtn"
 onclick="sendOrder()">
 
 اطلب الآن
@@ -648,8 +731,6 @@ onclick="sendOrder()">
 </button>
 
 </div>
-
-<!-- المميزات -->
 
 <div class="features">
 
@@ -689,8 +770,6 @@ AURES BATNA DZ © 2026
 
 </footer>
 
-<!-- نافذة النجاح -->
-
 <div class="modal" id="successModal">
 
 <div class="modal-content">
@@ -721,17 +800,261 @@ onclick="closeModal()">
 <script>
 
 const PRODUCT_PRICE = 1900;
+const GOOGLE_SHEET_ID = 'YOUR_GOOGLE_SHEET_ID'; // ضع هنا معرف الجدول
+const API_KEY = 'YOUR_API_KEY'; // ضع هنا مفتاح API
 
 let selectedColor = "بني";
+let selectedSize = "";
 let deliveryData = [];
+let stockData = {}; // سيتم ملؤها من Google Sheet
+let productData = {}; // لتخزين بيانات المنتج
 
-/* ================= الصور ================= */
+// ================= جلب بيانات المخزون من Google Sheet =================
+
+async function loadStockFromSheet() {
+    const spinner = document.getElementById('loadingSpinner');
+    spinner.classList.add('show');
+    
+    try {
+        // استخدام Google Sheets API v4
+        const range = 'PRODUCTS!A2:Z'; // اسم الورقة PRODUCTS
+        const url = `https://sheets.googleapis.com/v4/spreadsheets/${GOOGLE_SHEET_ID}/values/${range}?key=${API_KEY}`;
+        
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        if (!data.values || data.values.length === 0) {
+            console.error('لا توجد بيانات في الجدول');
+            showStockMessage('error', '⚠️ لا توجد بيانات مخزون متوفرة');
+            return;
+        }
+        
+        // تنسيق البيانات المتوقعة:
+        // الصف الأول: الأعمدة (Product ID, Product Name, Color, Size, Prix, Purchased Qty, Sold Qty, Stock Qty)
+        // الصفوف التالية: البيانات
+        
+        const headers = data.values[0];
+        const rows = data.values.slice(1);
+        
+        // العثور على أعمدة البيانات
+        const colorIndex = headers.findIndex(h => h.toLowerCase().includes('color'));
+        const sizeIndex = headers.findIndex(h => h.toLowerCase().includes('size'));
+        const stockIndex = headers.findIndex(h => h.toLowerCase().includes('stock'));
+        const priceIndex = headers.findIndex(h => h.toLowerCase().includes('prix') || h.toLowerCase().includes('price'));
+        const productNameIndex = headers.findIndex(h => h.toLowerCase().includes('product name'));
+        const productIdIndex = headers.findIndex(h => h.toLowerCase().includes('product id'));
+        
+        if (colorIndex === -1 || sizeIndex === -1 || stockIndex === -1) {
+            console.error('لم يتم العثور على الأعمدة المطلوبة: Color, Size, Stock Qty');
+            showStockMessage('error', '⚠️ تنسيق الجدول غير صحيح. تأكد من وجود أعمدة: Color, Size, Stock Qty');
+            return;
+        }
+        
+        // بناء كائن المخزون
+        stockData = {};
+        const colors = new Set();
+        const sizes = new Set();
+        
+        rows.forEach(row => {
+            if (row.length <= Math.max(colorIndex, sizeIndex, stockIndex)) return;
+            
+            const color = row[colorIndex]?.trim();
+            const size = row[sizeIndex]?.toString().trim();
+            const stock = parseInt(row[stockIndex]) || 0;
+            const price = priceIndex !== -1 ? parseFloat(row[priceIndex]) || PRODUCT_PRICE : PRODUCT_PRICE;
+            const productName = productNameIndex !== -1 ? row[productNameIndex]?.trim() : 'حذاء AURES BATNA DZ';
+            const productId = productIdIndex !== -1 ? row[productIdIndex]?.trim() : '';
+            
+            if (color && size) {
+                if (!stockData[color]) {
+                    stockData[color] = {};
+                }
+                stockData[color][size] = stock;
+                colors.add(color);
+                sizes.add(size);
+                
+                // تخزين بيانات المنتج
+                const key = `${color}|${size}`;
+                productData[key] = {
+                    productId: productId,
+                    productName: productName,
+                    price: price,
+                    stock: stock
+                };
+            }
+        });
+        
+        // تحديث سعر المنتج إذا وجد
+        if (rows.length > 0 && priceIndex !== -1) {
+            const firstPrice = parseFloat(rows[0][priceIndex]);
+            if (firstPrice && !isNaN(firstPrice)) {
+                document.getElementById('productPrice').textContent = firstPrice + ' دج';
+                document.getElementById('priceValue').textContent = firstPrice;
+                // تحديث PRODUCT_PRICE إذا أردت
+            }
+        }
+        
+        // إنشاء أزرار الألوان ديناميكياً
+        createColorButtons(colors);
+        
+        // تحديث واجهة المستخدم
+        updateColorButtons();
+        
+        // التحقق من المخزون إذا كان هناك مقاس محدد
+        const sizeSelect = document.getElementById('size');
+        if (sizeSelect.value) {
+            checkStock();
+        }
+        
+    } catch (error) {
+        console.error('خطأ في جلب البيانات من Google Sheet:', error);
+        showStockMessage('error', '⚠️ حدث خطأ في تحميل بيانات المخزون. يرجى تحديث الصفحة.');
+    } finally {
+        spinner.classList.remove('show');
+    }
+}
+
+// ================= إنشاء أزرار الألوان =================
+
+function createColorButtons(colors) {
+    const container = document.getElementById('colorContainer');
+    container.innerHTML = '';
+    
+    // ترتيب الألوان
+    const sortedColors = Array.from(colors).sort();
+    
+    // تعيين اللون الأول كافتراضي
+    if (sortedColors.length > 0) {
+        selectedColor = sortedColors[0];
+    }
+    
+    sortedColors.forEach((color, index) => {
+        const btn = document.createElement('button');
+        btn.className = `color-btn ${index === 0 ? 'active' : ''}`;
+        btn.dataset.color = color;
+        btn.onclick = function() { selectColor(this, color); };
+        
+        // حساب إجمالي المخزون لهذا اللون
+        let totalStock = 0;
+        if (stockData[color]) {
+            Object.values(stockData[color]).forEach(qty => {
+                totalStock += qty;
+            });
+        }
+        
+        btn.innerHTML = `
+            ${color}
+            <span class="stock-badge">${totalStock}</span>
+        `;
+        
+        container.appendChild(btn);
+    });
+}
+
+// ================= نظام المخزون =================
+
+// دالة للتحقق من توفر المخزون
+function checkStock() {
+    const size = document.getElementById("size").value;
+    const color = selectedColor;
+    const stockMessage = document.getElementById("stockMessage");
+    const orderBtn = document.getElementById("orderBtn");
+    
+    // إخفاء الرسالة أولاً
+    stockMessage.className = "stock-message";
+    stockMessage.style.display = "none";
+    orderBtn.disabled = false;
+    orderBtn.textContent = "اطلب الآن";
+    
+    if (!size || !color) {
+        return;
+    }
+    
+    selectedSize = size;
+    
+    // التحقق من وجود اللون في المخزون
+    if (!stockData[color]) {
+        showStockMessage("error", "⚠️ هذا اللون غير متوفر حالياً");
+        orderBtn.disabled = true;
+        return;
+    }
+    
+    const stock = stockData[color][size];
+    
+    // إذا كانت الكمية غير محددة أو 0
+    if (stock === undefined || stock === 0) {
+        // البحث عن ألوان متوفرة لنفس المقاس
+        const availableColors = [];
+        for (const [col, sizes] of Object.entries(stockData)) {
+            if (col !== color && sizes[size] && sizes[size] > 0) {
+                availableColors.push(col);
+            }
+        }
+        
+        let message = `❌ عذراً، لون "${color}" مقاس ${size} غير متوفر في المخزون.`;
+        
+        if (availableColors.length > 0) {
+            message += `<br><span class="suggestions">💡 الألوان المتوفرة في مقاس ${size}: ${availableColors.join('، ')}</span>`;
+        } else {
+            message += `<br><span class="suggestions">💡 عذراً، لا توجد ألوان متوفرة في مقاس ${size} حالياً.</span>`;
+        }
+        
+        showStockMessage("error", message);
+        orderBtn.disabled = true;
+        return;
+    }
+    
+    // الكمية متوفرة
+    let message = `✅ لون "${color}" مقاس ${size} متوفر (الكمية: ${stock})`;
+    if (stock <= 2) {
+        message = `⚠️ تنبيه: لون "${color}" مقاس ${size} على وشك النفاذ (الكمية: ${stock})`;
+        showStockMessage("warning", message);
+    } else {
+        showStockMessage("success", message);
+    }
+    
+    orderBtn.disabled = false;
+}
+
+// دالة عرض رسالة المخزون
+function showStockMessage(type, message) {
+    const stockMessage = document.getElementById("stockMessage");
+    stockMessage.className = `stock-message show ${type}`;
+    stockMessage.innerHTML = message;
+    stockMessage.style.display = "block";
+}
+
+// ================= تحديث حالة أزرار الألوان =================
+function updateColorButtons() {
+    const size = document.getElementById("size").value;
+    const colorButtons = document.querySelectorAll(".color-btn");
+    
+    colorButtons.forEach(btn => {
+        const color = btn.dataset.color;
+        // إزالة الكلاسات القديمة
+        btn.classList.remove("in-stock", "out-of-stock");
+        
+        if (size && stockData[color]) {
+            const stock = stockData[color][size];
+            if (stock === undefined || stock === 0) {
+                btn.classList.add("out-of-stock");
+            } else {
+                btn.classList.add("in-stock");
+                // تحديث العدد
+                const badge = btn.querySelector(".stock-badge");
+                if (badge) badge.textContent = stock;
+            }
+        }
+    });
+}
+
+// ================= الصور =================
 
 function changeImage(src){
   document.getElementById("mainImage").src = src;
 }
 
-/* ================= الألوان ================= */
+// ================= الألوان =================
 
 function selectColor(btn,color){
 
@@ -742,9 +1065,13 @@ function selectColor(btn,color){
     .forEach(b=>b.classList.remove("active"));
 
   btn.classList.add("active");
+  
+  // التحقق من المخزون بعد تغيير اللون
+  checkStock();
+  updateColorButtons();
 }
 
-/* ================= الولايات ================= */
+// ================= الولايات =================
 
 async function loadDelivery(){
 
@@ -782,7 +1109,7 @@ async function loadDelivery(){
 
 }
 
-/* ================= حساب التوصيل ================= */
+// ================= حساب التوصيل =================
 
 function updateTotal(){
 
@@ -817,7 +1144,7 @@ function updateTotal(){
   ).innerText = PRODUCT_PRICE + deliveryPrice;
 }
 
-/* ================= تغيير الولاية ================= */
+// ================= تغيير الولاية والمقاس =================
 
 document.addEventListener("change",function(e){
 
@@ -827,12 +1154,29 @@ document.addEventListener("change",function(e){
   ){
     updateTotal();
   }
+  
+  if(e.target.id === "size"){
+    checkStock();
+    updateColorButtons();
+  }
 
 });
 
-/* ================= إرسال الطلب ================= */
+// ================= إرسال الطلب =================
 
 async function sendOrder(){
+
+  // التحقق من المخزون مرة أخيرة قبل الإرسال
+  const size = document.getElementById("size").value;
+  const color = selectedColor;
+  
+  if (size && color && stockData[color]) {
+    const stock = stockData[color][size];
+    if (stock === undefined || stock === 0) {
+      alert("❌ عذراً، هذا المنتج غير متوفر في المخزون. يرجى اختيار لون أو مقاس آخر.");
+      return;
+    }
+  }
 
   const fullName =
     document.getElementById("fullName")
@@ -841,10 +1185,6 @@ async function sendOrder(){
   const phone =
     document.getElementById("phone")
     .value.trim();
-
-  const size =
-    document.getElementById("size")
-    .value;
 
   const wilaya =
     document.getElementById("wilaya")
@@ -860,32 +1200,27 @@ async function sendOrder(){
 
   // ================= التحقق المحسن =================
   
-  // 1. التحقق من الاسم الكامل (يجب أن يكون حرفين على الأقل)
   if(!fullName || fullName.length < 2){
     alert("يرجى إدخال الاسم الكامل (حرفين على الأقل)");
     return;
   }
 
-  // 2. التحقق من رقم الهاتف (يجب أن يكون 10 أرقام على الأقل ويحتوي على أرقام فقط)
   const phoneRegex = /^[0-9]{10,15}$/;
   if(!phone || !phoneRegex.test(phone)){
     alert("يرجى إدخال رقم هاتف صحيح (10-15 رقم)");
     return;
   }
 
-  // 3. التحقق من اختيار المقاس
   if(!size){
     alert("يرجى اختيار المقاس");
     return;
   }
 
-  // 4. التحقق من اختيار الولاية
   if(!wilaya){
     alert("يرجى اختيار الولاية");
     return;
   }
 
-  // 5. التحقق من صحة الولاية في قائمة البيانات
   const row =
     deliveryData.find(
       x => x.name == wilaya
@@ -896,12 +1231,6 @@ async function sendOrder(){
     return;
   }
 
-  // 6. التحقق من نوع التوصيل (حقل المكتب اختياري، لا نحتاج للتحقق منه)
-  // تم إزالة التحقق الإجباري لحقل officeName
-
-  // نهاية التحقق المحسن
-  // =========================================
-
   let deliveryPrice = 0;
 
   if(deliveryType === "home"){
@@ -910,26 +1239,36 @@ async function sendOrder(){
     deliveryPrice = Number(row.office);
   }
 
-  const total =
-    PRODUCT_PRICE + deliveryPrice;
+  // جلب سعر المنتج من البيانات إذا كان متوفراً
+  let productPrice = PRODUCT_PRICE;
+  const key = `${color}|${size}`;
+  if (productData[key] && productData[key].price) {
+    productPrice = productData[key].price;
+  }
+
+  const total = productPrice + deliveryPrice;
 
   const orderData = {
 
     fullName,
     phone,
 
-    color:selectedColor,
+    color: selectedColor,
     size,
 
     wilaya,
     deliveryType,
-    officeName: officeName || "", // إرسال فارغ إذا لم يكتب شيئاً
+    officeName: officeName || "",
 
-    productPrice:PRODUCT_PRICE,
+    productPrice: productPrice,
     deliveryPrice,
     total,
 
-    qty:1
+    qty: 1,
+
+    // إضافة بيانات إضافية من الجدول
+    productId: productData[key]?.productId || '',
+    productName: productData[key]?.productName || 'حذاء AURES BATNA DZ'
 
   };
 
@@ -982,7 +1321,7 @@ async function sendOrder(){
 
 }
 
-/* ================= نافذة النجاح ================= */
+// ================= نافذة النجاح =================
 
 function closeModal(){
 
@@ -992,9 +1331,16 @@ function closeModal(){
 
 }
 
-/* ================= بدء التشغيل ================= */
+// ================= بدء التشغيل =================
 
-loadDelivery();
+// تحميل المخزون من Google Sheet أولاً
+async function init() {
+    await loadStockFromSheet();
+    await loadDelivery();
+}
+
+// بدء التشغيل
+init();
 
 </script>
 
