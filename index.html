@@ -385,7 +385,7 @@ placeholder="أدخل رقم الهاتف">
 <div class="form-group">
 
 <label>
-اكتب مكتب التوصيل الأقرب إليك
+اكتب مكتب التوصيل الأقرب إليك (اختياري)
 </label>
 
 <input
@@ -679,11 +679,8 @@ async function sendOrder(){
     return;
   }
 
-  // 6. التحقق من نوع التوصيل وكتابة المكتب إذا كان التوصيل إلى المكتب
-  if(deliveryType === "office" && !officeName){
-    alert("يرجى كتابة اسم مكتب التوصيل الأقرب إليك");
-    return;
-  }
+  // 6. التحقق من نوع التوصيل (حقل المكتب اختياري، لا نحتاج للتحقق منه)
+  // تم إزالة التحقق الإجباري لحقل officeName
 
   // نهاية التحقق المحسن
   // =========================================
@@ -709,7 +706,7 @@ async function sendOrder(){
 
     wilaya,
     deliveryType,
-    officeName,
+    officeName: officeName || "", // إرسال فارغ إذا لم يكتب شيئاً
 
     productPrice:PRODUCT_PRICE,
     deliveryPrice,
