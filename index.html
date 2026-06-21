@@ -1,1002 +1,494 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURES BATNA DZ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Cairo', sans-serif;
+    }
 
-<title>AURES BATNA DZ</title>
+    body {
+      background: #f5f5f5;
+      color: #222;
+    }
 
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    /* ---- HEADER ---- */
+    header {
+      background: #111;
+      color: #fff;
+      text-align: center;
+      padding: 15px 15px 10px;
+    }
 
-<style>
+    /* الشعار ممدود بالكامل من اليسار إلى اليمين */
+    .logo-wrapper {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0 10px;
+      margin-bottom: 6px;
+    }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Cairo',sans-serif;
-}
+    .logo {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      display: block;
+      object-fit: contain;
+      /* نضمن أن الصورة تغطي العرض بالكامل مع الحفاظ على نسبتها */
+    }
 
-body{
-background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
-color:#222;
-min-height:100vh;
-}
+    header h1 {
+      font-size: 34px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin-top: 4px;
+    }
 
-/* شريط علوي متطور */
-header{
-background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
-color:#fff;
-text-align:center;
-padding:25px 15px;
-position:relative;
-overflow:hidden;
-border-bottom:3px solid #f7c948;
-}
+    header p {
+      font-size: 18px;
+      color: #f7c948;
+      margin-top: 2px;
+    }
 
-header::before{
-content:'';
-position:absolute;
-top:-50%;
-left:-50%;
-width:200%;
-height:200%;
-background:radial-gradient(circle, rgba(247,201,72,0.05) 0%, transparent 70%);
-animation:headerGlow 8s ease-in-out infinite;
-}
+    /* ---- container ---- */
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 15px;
+    }
 
-@keyframes headerGlow{
-0%,100%{transform:translate(0,0);}
-50%{transform:translate(10%,10%);}
-}
+    .viewer {
+      background: #fff;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, .08);
+    }
 
-header *{
-position:relative;
-z-index:1;
-}
+    .viewer img {
+      width: 100%;
+      height: 420px;
+      object-fit: contain;
+      background: #fff;
+    }
 
-.logo{
-width:140px;
-max-width:90%;
-margin-bottom:10px;
-filter:drop-shadow(0 4px 8px rgba(247,201,72,0.3));
-transition:transform 0.3s;
-}
+    .thumbs {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 10px;
+      background: #fff;
+      margin-top: 10px;
+      border-radius: 15px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, .08);
+    }
 
-.logo:hover{
-transform:scale(1.05);
-}
+    .thumbs img {
+      width: 90px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 10px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: .3s;
+    }
 
-header h1{
-font-size:36px;
-font-weight:800;
-background:linear-gradient(135deg, #ffffff 0%, #f7c948 100%);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-text-shadow:none;
-}
+    .thumbs img:hover {
+      border-color: #111;
+    }
 
-header p{
-font-size:20px;
-color:#f7c948;
-margin-top:5px;
-font-weight:600;
-letter-spacing:1px;
-}
+    .card {
+      background: #fff;
+      margin-top: 15px;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, .08);
+    }
 
-.container{
-max-width:950px;
-margin:auto;
-padding:20px 15px;
-}
+    .product-name {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
 
-/* عرض الصورة الرئيسية - تكبير الصورة */
-.viewer{
-background:#fff;
-border-radius:20px;
-overflow:hidden;
-box-shadow:0 10px 40px rgba(0,0,0,0.12);
-transition:transform 0.3s, box-shadow 0.3s;
-}
+    .price {
+      font-size: 30px;
+      font-weight: 800;
+      color: #e53935;
+      margin-bottom: 15px;
+    }
 
-.viewer:hover{
-transform:translateY(-3px);
-box-shadow:0 15px 50px rgba(0,0,0,0.18);
-}
+    .colors {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
 
-.viewer img{
-width:100%;
-height:550px; /* زيادة الارتفاع لجعل الصورة أكبر */
-object-fit:contain;
-background:linear-gradient(135deg, #fafafa 0%, #f0f0f0 100%);
-padding:15px; /* زيادة المسافة الداخلية */
-}
+    .color-btn {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      background: #eee;
+      font-weight: 700;
+    }
 
-/* الصور المصغرة - تكبيرها */
-.thumbs{
-display:flex;
-gap:15px; /* زيادة المسافة بين الصور */
-overflow-x:auto;
-padding:18px; /* زيادة المسافة الداخلية */
-background:linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
-margin-top:15px;
-border-radius:20px;
-box-shadow:0 5px 25px rgba(0,0,0,0.08);
-scroll-behavior:smooth;
-}
+    .color-btn.active {
+      background: #111;
+      color: #fff;
+    }
 
-.thumbs::-webkit-scrollbar{
-height:8px; /* زيادة ارتفاع شريط التمرير */
-}
+    .form-group {
+      margin-bottom: 12px;
+    }
 
-.thumbs::-webkit-scrollbar-track{
-background:#f0f0f0;
-border-radius:10px;
-}
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 700;
+    }
 
-.thumbs::-webkit-scrollbar-thumb{
-background:linear-gradient(135deg, #f7c948, #e5b83a);
-border-radius:10px;
-}
+    input,
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 15px;
+    }
 
-.thumbs img{
-width:120px; /* زيادة العرض */
-height:120px; /* زيادة الارتفاع */
-object-fit:cover;
-border-radius:14px; /* زيادة الزوايا */
-cursor:pointer;
-border:3px solid transparent;
-transition:all 0.3s ease;
-flex-shrink:0;
-}
+    .summary {
+      background: #fafafa;
+      padding: 15px;
+      border-radius: 12px;
+      margin-top: 15px;
+      line-height: 2;
+      font-weight: 700;
+    }
 
-.thumbs img:hover{
-border-color:#f7c948;
-transform:scale(1.1); /* تكبير عند المرور */
-box-shadow:0 8px 25px rgba(247,201,72,0.4);
-}
+    .order-btn {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      background: #111;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 700;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
 
-/* البطاقة */
-.card{
-background:linear-gradient(135deg, #ffffff 0%, #fcfcfc 100%);
-margin-top:20px;
-padding:25px;
-border-radius:20px;
-box-shadow:0 10px 40px rgba(0,0,0,0.08);
-border:1px solid rgba(247,201,72,0.15);
-transition:transform 0.3s;
-}
+    .order-btn:hover {
+      opacity: .9;
+    }
 
-.product-name{
-font-size:30px;
-font-weight:800;
-margin-bottom:8px;
-background:linear-gradient(135deg, #1a1a1a 0%, #333 100%);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-}
+    .features {
+      margin-top: 20px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, .08);
+    }
 
-.price{
-font-size:34px;
-font-weight:800;
-color:#e53935;
-margin-bottom:18px;
-text-shadow:0 2px 10px rgba(229,57,53,0.15);
-display:inline-block;
-padding:5px 20px;
-background:rgba(229,57,53,0.05);
-border-radius:12px;
-}
+    .features h3 {
+      margin-bottom: 10px;
+    }
 
-/* الألوان */
-.colors{
-display:flex;
-gap:12px;
-flex-wrap:wrap;
-margin-bottom:20px;
-}
+    .features ul {
+      line-height: 2;
+    }
 
-.color-btn{
-padding:12px 24px;
-border:2px solid transparent;
-border-radius:30px;
-cursor:pointer;
-background:#f0f0f0;
-font-weight:700;
-transition:all 0.3s ease;
-font-size:15px;
-}
+    footer {
+      margin-top: 20px;
+      background: #111;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      line-height: 2;
+    }
 
-.color-btn:hover{
-transform:translateY(-2px);
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
-}
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .6);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
 
-.color-btn.active{
-background:linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-color:#fff;
-border-color:#f7c948;
-box-shadow:0 5px 20px rgba(0,0,0,0.2);
-transform:translateY(-2px);
-}
+    .modal-content {
+      background: #fff;
+      padding: 25px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+    }
 
-/* الحقول */
-.form-group{
-margin-bottom:16px;
-}
+    .success {
+      font-size: 22px;
+      font-weight: 800;
+      color: green;
+      margin-bottom: 10px;
+    }
 
-.form-group label{
-display:block;
-margin-bottom:6px;
-font-weight:700;
-color:#333;
-font-size:15px;
-}
+    .close-btn {
+      margin-top: 15px;
+      padding: 10px 20px;
+      border: none;
+      background: #111;
+      color: #fff;
+      border-radius: 10px;
+      cursor: pointer;
+    }
 
-input,
-select{
-width:100%;
-padding:14px 16px;
-border:2px solid #e8e8e8;
-border-radius:12px;
-font-size:15px;
-transition:all 0.3s ease;
-background:#fafafa;
-}
-
-input:focus,
-select:focus{
-border-color:#f7c948;
-outline:none;
-box-shadow:0 0 0 4px rgba(247,201,72,0.15);
-background:#fff;
-}
-
-input:hover,
-select:hover{
-border-color:#ddd;
-}
-
-/* الأسعار */
-.summary{
-background:linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
-padding:20px;
-border-radius:14px;
-margin-top:20px;
-line-height:2.2;
-font-weight:700;
-border:1px solid rgba(247,201,72,0.1);
-}
-
-.summary div{
-display:flex;
-justify-content:space-between;
-padding:5px 0;
-border-bottom:1px dashed rgba(0,0,0,0.05);
-}
-
-.summary div:last-child{
-border-bottom:none;
-font-size:20px;
-color:#e53935;
-}
-
-/* زر الطلب */
-.order-btn{
-width:100%;
-padding:18px;
-border:none;
-background:linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-color:#fff;
-font-size:20px;
-font-weight:800;
-border-radius:14px;
-cursor:pointer;
-margin-top:20px;
-transition:all 0.3s ease;
-letter-spacing:1px;
-position:relative;
-overflow:hidden;
-}
-
-.order-btn::before{
-content:'';
-position:absolute;
-top:0;
-left:-100%;
-width:100%;
-height:100%;
-background:linear-gradient(90deg, transparent, rgba(247,201,72,0.15), transparent);
-transition:left 0.5s;
-}
-
-.order-btn:hover::before{
-left:100%;
-}
-
-.order-btn:hover{
-transform:translateY(-3px);
-box-shadow:0 10px 30px rgba(0,0,0,0.25);
-background:linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
-}
-
-.order-btn:active{
-transform:translateY(0);
-}
-
-/* المميزات */
-.features{
-margin-top:25px;
-background:linear-gradient(135deg, #ffffff 0%, #fcfcfc 100%);
-padding:25px;
-border-radius:20px;
-box-shadow:0 5px 25px rgba(0,0,0,0.06);
-border:1px solid rgba(247,201,72,0.1);
-}
-
-.features h3{
-margin-bottom:15px;
-font-size:22px;
-font-weight:800;
-color:#1a1a1a;
-}
-
-.features ul{
-line-height:2.5;
-list-style:none;
-padding:0;
-}
-
-.features ul li{
-padding:8px 0;
-border-bottom:1px solid rgba(0,0,0,0.03);
-display:flex;
-align-items:center;
-gap:10px;
-}
-
-.features ul li:last-child{
-border-bottom:none;
-}
-
-/* footer */
-footer{
-margin-top:30px;
-background:linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
-color:#fff;
-padding:30px 20px;
-text-align:center;
-line-height:2.5;
-border-top:3px solid #f7c948;
-}
-
-footer div{
-opacity:0.9;
-transition:opacity 0.3s;
-}
-
-footer div:hover{
-opacity:1;
-}
-
-footer div:last-child{
-margin-top:10px;
-opacity:0.6;
-font-size:14px;
-}
-
-/* popup */
-.modal{
-display:none;
-position:fixed;
-inset:0;
-background:rgba(0,0,0,0.7);
-backdrop-filter:blur(8px);
-justify-content:center;
-align-items:center;
-z-index:999;
-animation:fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn{
-from{opacity:0;transform:scale(0.9);}
-to{opacity:1;transform:scale(1);}
-}
-
-.modal-content{
-background:linear-gradient(135deg, #ffffff 0%, #fcfcfc 100%);
-padding:35px;
-border-radius:24px;
-width:90%;
-max-width:420px;
-text-align:center;
-box-shadow:0 30px 80px rgba(0,0,0,0.3);
-border:1px solid rgba(247,201,72,0.2);
-}
-
-.success{
-font-size:26px;
-font-weight:800;
-color:#27ae60;
-margin-bottom:12px;
-}
-
-.modal-content p{
-color:#555;
-line-height:1.8;
-font-size:16px;
-}
-
-.close-btn{
-margin-top:20px;
-padding:14px 40px;
-border:none;
-background:linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-color:#fff;
-border-radius:12px;
-cursor:pointer;
-font-size:16px;
-font-weight:700;
-transition:all 0.3s ease;
-}
-
-.close-btn:hover{
-transform:translateY(-2px);
-box-shadow:0 8px 25px rgba(0,0,0,0.2);
-}
-
-/* تحسينات للجوال */
-@media (max-width:600px){
-header h1{font-size:26px;}
-header p{font-size:16px;}
-.viewer img{height:380px;} /* تكبير في الجوال أيضاً */
-padding:10px;
-.product-name{font-size:24px;}
-.price{font-size:28px;}
-.card{padding:18px;}
-.thumbs img{width:90px;height:90px;} /* تكبير في الجوال */
-.summary div{font-size:14px;}
-.summary div:last-child{font-size:17px;}
-.order-btn{font-size:17px;padding:15px;}
-}
-
-/* تحسينات للشاشات المتوسطة */
-@media (min-width:601px) and (max-width:1024px){
-.viewer img{height:480px;}
-.thumbs img{width:100px;height:100px;}
-}
-
-</style>
+    /* تحسينات للشعار على الموبايل */
+    @media (max-width: 640px) {
+      .logo-wrapper {
+        padding: 0 6px;
+      }
+      header h1 {
+        font-size: 28px;
+      }
+    }
+  </style>
 </head>
-
 <body>
 
-<header>
-
-<img src="images/logo.png" class="logo">
-
-<h1>AURES BATNA DZ</h1>
-
-<p>"بليغة في الواعر"</p>
-
-</header>
-
-<div class="container">
-
-<!-- الصورة الرئيسية -->
-<div class="viewer">
-<img id="mainImage" src="images/nassim05.gif.gif">
-</div>
-
-<!-- الصور المصغرة -->
-<div class="thumbs">
-
-<img src="images/nassim05.gif.gif"
-onclick="changeImage(this.src)">
-
-<img src="images/nnassim01.png.jpg"
-onclick="changeImage(this.src)">
-
-<img src="images/nassim02.png.jpg"
-onclick="changeImage(this.src)">
-
-<img src="images/nassim03.png.jpg"
-onclick="changeImage(this.src)">
-
-<img src="images/nassim04.png.jpg"
-onclick="changeImage(this.src)">
-
-</div>
-
-<!-- المنتج -->
-<div class="card">
-
-<div class="product-name">
-حذاء AURES BATNA DZ
-</div>
-
-<div class="price" id="productPrice">
-1900 دج
-</div>
-
-<h3>الألوان المتوفرة</h3>
-
-<div class="colors">
-
-<button class="color-btn active"
-onclick="selectColor(this,'بني')">
-بني
-</button>
-
-<button class="color-btn"
-onclick="selectColor(this,'رمادي')">
-رمادي
-</button>
-
-<button class="color-btn"
-onclick="selectColor(this,'أزرق')">
-أزرق
-</button>
-
-</div>
-
-<div class="form-group">
-<label>المقاس</label>
-
-<select id="size">
-
-<option value="">اختر المقاس</option>
-
-<option>40</option>
-<option>41</option>
-<option>42</option>
-<option>43</option>
-<option>44</option>
-<option>45</option>
-
-</select>
-
-</div>
-
-<div class="form-group">
-<label>الاسم الكامل</label>
-
-<input
-id="fullName"
-placeholder="أدخل الاسم الكامل">
-</div>
-
-<div class="form-group">
-<label>رقم الهاتف</label>
-
-<input
-id="phone"
-placeholder="أدخل رقم الهاتف">
-</div>
-
-<div class="form-group">
-<label>الولاية</label>
-
-<select id="wilaya">
-<option>جاري التحميل...</option>
-</select>
-</div>
-
-<div class="form-group">
-<label>نوع التوصيل</label>
-
-<select id="deliveryType">
-
-<option value="home">
-التوصيل إلى المنزل
-</option>
-
-<option value="office">
-التوصيل إلى المكتب
-</option>
-
-</select>
-
-</div>
-
-<div class="form-group">
-
-<label>
-اكتب مكتب التوصيل الأقرب إليك (اختياري)
-</label>
-
-<input
-id="officeName"
-placeholder="مثال: مكتب باتنة وسط">
-
-</div>
-
-<div class="summary">
-
-<div>
-سعر المنتج:
-<span id="priceValue">
-1900
-</span>
-دج
-</div>
-
-<div>
-سعر التوصيل:
-<span id="deliveryPrice">
-0
-</span>
-دج
-</div>
-
-<div>
-الإجمالي:
-<span id="totalPrice">
-1900
-</span>
-دج
-</div>
-
-</div>
-
-<button
-class="order-btn"
-onclick="sendOrder()">
-
-اطلب الآن
-
-</button>
-
-</div>
-
-<!-- المميزات -->
-
-<div class="features">
-
-<h3>لماذا تختار هذا المنتج؟</h3>
-
-<ul>
-
-<li>✅ خامة عالية الجودة</li>
-
-<li>✅ مريح للمشي اليومي</li>
-
-<li>✅ تصميم عصري وأنيق</li>
-
-<li>✅ الدفع عند الاستلام</li>
-
-<li>✅ التوصيل إلى 69 ولاية</li>
-
-</ul>
-
-</div>
-
-</div>
-
-<footer>
-
-<div>🚚 التوصيل إلى 69 ولاية</div>
-
-<div>💰 الدفع عند الاستلام</div>
-
-<div>📞 مصلحة الزبائن</div>
-
-<div>0659418701</div>
-
-<div>
-AURES BATNA DZ © 2026
-</div>
-
-</footer>
-
-<!-- نافذة النجاح -->
-
-<div class="modal" id="successModal">
-
-<div class="modal-content">
-
-<div class="success">
-✅ تم استلام طلبكم
-</div>
-
-<p>
-
-سوف يتصل بكم مكتب خدمة الزبائن
-لتأكيد الطلبية في أقرب وقت.
-
-</p>
-
-<button
-class="close-btn"
-onclick="closeModal()">
-
-إغلاق
-
-</button>
-
-</div>
-
-</div>
-</body>
-<script>
-
-const PRODUCT_PRICE = 1900;
-
-let selectedColor = "بني";
-let deliveryData = [];
-
-/* ================= الصور ================= */
-
-function changeImage(src){
-  document.getElementById("mainImage").src = src;
-}
-
-/* ================= الألوان ================= */
-
-function selectColor(btn,color){
-
-  selectedColor = color;
-
-  document
-    .querySelectorAll(".color-btn")
-    .forEach(b=>b.classList.remove("active"));
-
-  btn.classList.add("active");
-}
-
-/* ================= الولايات ================= */
-
-async function loadDelivery(){
-
-  try{
-
-    const res = await fetch("/api/delivery");
-
-    deliveryData = await res.json();
-
-    let html =
-      '<option value="">اختر الولاية</option>';
-
-    deliveryData.forEach(w=>{
-
-      html += `
-      <option value="${w.name}">
-        ${w.name}
-      </option>
-      `;
-
+  <header>
+    <!-- تم حذف "بليغة روعة" واستبدالها بشعار ممتد بالكامل -->
+    <div class="logo-wrapper">
+      <img src="images/logo.png" alt="AURES BATNA DZ" class="logo">
+    </div>
+    <h1>AURES BATNA DZ</h1>
+    <!-- النص "بليغة في الواعر" تم الاحتفاظ به لأنه ليس "بليغة روعة" -->
+    <p>"بليغة في الواعر"</p>
+  </header>
+
+  <div class="container">
+
+    <!-- الصورة الرئيسية -->
+    <div class="viewer">
+      <img id="mainImage" src="images/nassim05.gif.gif" alt="صورة المنتج">
+    </div>
+
+    <!-- الصور المصغرة -->
+    <div class="thumbs">
+      <img src="images/nassim05.gif.gif" alt="صورة 1" onclick="changeImage(this.src)">
+      <img src="images/nnassim01.png.jpg" alt="صورة 2" onclick="changeImage(this.src)">
+      <img src="images/nassim02.png.jpg" alt="صورة 3" onclick="changeImage(this.src)">
+      <img src="images/nassim03.png.jpg" alt="صورة 4" onclick="changeImage(this.src)">
+      <img src="images/nassim04.png.jpg" alt="صورة 5" onclick="changeImage(this.src)">
+    </div>
+
+    <!-- المنتج -->
+    <div class="card">
+      <div class="product-name">حذاء AURES BATNA DZ</div>
+      <div class="price" id="productPrice">1900 دج</div>
+
+      <h3>الألوان المتوفرة</h3>
+      <div class="colors">
+        <button class="color-btn active" onclick="selectColor(this,'بني')">بني</button>
+        <button class="color-btn" onclick="selectColor(this,'رمادي')">رمادي</button>
+        <button class="color-btn" onclick="selectColor(this,'أزرق')">أزرق</button>
+      </div>
+
+      <div class="form-group">
+        <label>المقاس</label>
+        <select id="size">
+          <option value="">اختر المقاس</option>
+          <option>40</option><option>41</option><option>42</option>
+          <option>43</option><option>44</option><option>45</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>الاسم الكامل</label>
+        <input id="fullName" placeholder="أدخل الاسم الكامل">
+      </div>
+
+      <div class="form-group">
+        <label>رقم الهاتف</label>
+        <input id="phone" placeholder="أدخل رقم الهاتف">
+      </div>
+
+      <div class="form-group">
+        <label>الولاية</label>
+        <select id="wilaya">
+          <option>جاري التحميل...</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>نوع التوصيل</label>
+        <select id="deliveryType">
+          <option value="home">التوصيل إلى المنزل</option>
+          <option value="office">التوصيل إلى المكتب</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>اكتب مكتب التوصيل الأقرب إليك</label>
+        <input id="officeName" placeholder="مثال: مكتب باتنة وسط">
+      </div>
+
+      <div class="summary">
+        <div>سعر المنتج: <span id="priceValue">1900</span> دج</div>
+        <div>سعر التوصيل: <span id="deliveryPrice">0</span> دج</div>
+        <div>الإجمالي: <span id="totalPrice">1900</span> دج</div>
+      </div>
+
+      <button class="order-btn" onclick="sendOrder()">اطلب الآن</button>
+    </div>
+
+    <!-- المميزات -->
+    <div class="features">
+      <h3>لماذا تختار هذا المنتج؟</h3>
+      <ul>
+        <li>✅ خامة عالية الجودة</li>
+        <li>✅ مريح للمشي اليومي</li>
+        <li>✅ تصميم عصري وأنيق</li>
+        <li>✅ الدفع عند الاستلام</li>
+        <li>✅ التوصيل إلى 69 ولاية</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>
+    <div>🚚 التوصيل إلى 69 ولاية</div>
+    <div>💰 الدفع عند الاستلام</div>
+    <div>📞 مصلحة الزبائن</div>
+    <div>0659418701</div>
+    <div>AURES BATNA DZ © 2026</div>
+  </footer>
+
+  <!-- نافذة النجاح -->
+  <div class="modal" id="successModal">
+    <div class="modal-content">
+      <div class="success">✅ تم استلام طلبكم</div>
+      <p>سوف يتصل بكم مكتب خدمة الزبائن لتأكيد الطلبية في أقرب وقت.</p>
+      <button class="close-btn" onclick="closeModal()">إغلاق</button>
+    </div>
+  </div>
+
+  <script>
+    const PRODUCT_PRICE = 1900;
+    let selectedColor = "بني";
+    let deliveryData = [];
+
+    // ========== الصور ==========
+    function changeImage(src) {
+      document.getElementById("mainImage").src = src;
+    }
+
+    // ========== الألوان ==========
+    function selectColor(btn, color) {
+      selectedColor = color;
+      document.querySelectorAll(".color-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+    }
+
+    // ========== الولايات ==========
+    async function loadDelivery() {
+      try {
+        const res = await fetch("/api/delivery");
+        deliveryData = await res.json();
+        let html = '<option value="">اختر الولاية</option>';
+        deliveryData.forEach(w => {
+          html += `<option value="${w.name}">${w.name}</option>`;
+        });
+        document.getElementById("wilaya").innerHTML = html;
+        updateTotal();
+      } catch (err) {
+        console.error(err);
+        document.getElementById("wilaya").innerHTML = "<option>خطأ في تحميل الولايات</option>";
+      }
+    }
+
+    // ========== حساب التوصيل ==========
+    function updateTotal() {
+      const wilaya = document.getElementById("wilaya").value;
+      const type = document.getElementById("deliveryType").value;
+      let deliveryPrice = 0;
+      const row = deliveryData.find(x => x.name == wilaya);
+      if (row) {
+        deliveryPrice = type === "home" ? Number(row.home) : Number(row.office);
+      }
+      document.getElementById("deliveryPrice").innerText = deliveryPrice;
+      document.getElementById("totalPrice").innerText = PRODUCT_PRICE + deliveryPrice;
+    }
+
+    // ========== تغيير الولاية / التوصيل ==========
+    document.addEventListener("change", function(e) {
+      if (e.target.id === "wilaya" || e.target.id === "deliveryType") {
+        updateTotal();
+      }
     });
 
-    document.getElementById("wilaya").innerHTML = html;
+    // ========== إرسال الطلب ==========
+    async function sendOrder() {
+      const fullName = document.getElementById("fullName").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const size = document.getElementById("size").value;
+      const wilaya = document.getElementById("wilaya").value;
+      const deliveryType = document.getElementById("deliveryType").value;
+      const officeName = document.getElementById("officeName").value.trim();
 
-    updateTotal();
+      if (!fullName) { alert("أدخل الاسم الكامل"); return; }
+      if (!phone) { alert("أدخل رقم الهاتف"); return; }
+      if (!size) { alert("اختر المقاس"); return; }
+      if (!wilaya) { alert("اختر الولاية"); return; }
 
-  }catch(err){
+      const row = deliveryData.find(x => x.name == wilaya);
+      if (!row) { alert("تعذر العثور على الولاية"); return; }
 
-    console.error(err);
+      let deliveryPrice = deliveryType === "home" ? Number(row.home) : Number(row.office);
+      const total = PRODUCT_PRICE + deliveryPrice;
 
-    document.getElementById("wilaya").innerHTML =
-      "<option>خطأ في تحميل الولايات</option>";
+      const orderData = {
+        fullName, phone, color: selectedColor, size,
+        wilaya, deliveryType, officeName,
+        productPrice: PRODUCT_PRICE, deliveryPrice, total, qty: 1
+      };
 
-  }
-
-}
-
-/* ================= حساب التوصيل ================= */
-
-function updateTotal(){
-
-  const wilaya =
-    document.getElementById("wilaya").value;
-
-  const type =
-    document.getElementById("deliveryType").value;
-
-  let deliveryPrice = 0;
-
-  const row = deliveryData.find(
-    x => x.name == wilaya
-  );
-
-  if(row){
-
-    if(type === "home"){
-      deliveryPrice = Number(row.home);
-    }else{
-      deliveryPrice = Number(row.office);
-    }
-
-  }
-
-  document.getElementById(
-    "deliveryPrice"
-  ).innerText = deliveryPrice;
-
-  document.getElementById(
-    "totalPrice"
-  ).innerText = PRODUCT_PRICE + deliveryPrice;
-}
-
-/* ================= تغيير الولاية ================= */
-
-document.addEventListener("change",function(e){
-
-  if(
-    e.target.id === "wilaya" ||
-    e.target.id === "deliveryType"
-  ){
-    updateTotal();
-  }
-
-});
-
-/* ================= إرسال الطلب ================= */
-
-async function sendOrder(){
-
-  const fullName =
-    document.getElementById("fullName")
-    .value.trim();
-
-  const phone =
-    document.getElementById("phone")
-    .value.trim();
-
-  const size =
-    document.getElementById("size")
-    .value;
-
-  const wilaya =
-    document.getElementById("wilaya")
-    .value;
-
-  const deliveryType =
-    document.getElementById("deliveryType")
-    .value;
-
-  const officeName =
-    document.getElementById("officeName")
-    .value.trim();
-
-  // ================= التحقق المحسن =================
-  
-  // 1. التحقق من الاسم الكامل (يجب أن يكون حرفين على الأقل)
-  if(!fullName || fullName.length < 2){
-    alert("يرجى إدخال الاسم الكامل (حرفين على الأقل)");
-    return;
-  }
-
-  // 2. التحقق من رقم الهاتف (يجب أن يكون 10 أرقام على الأقل ويحتوي على أرقام فقط)
-  const phoneRegex = /^[0-9]{10,15}$/;
-  if(!phone || !phoneRegex.test(phone)){
-    alert("يرجى إدخال رقم هاتف صحيح (10-15 رقم)");
-    return;
-  }
-
-  // 3. التحقق من اختيار المقاس
-  if(!size){
-    alert("يرجى اختيار المقاس");
-    return;
-  }
-
-  // 4. التحقق من اختيار الولاية
-  if(!wilaya){
-    alert("يرجى اختيار الولاية");
-    return;
-  }
-
-  // 5. التحقق من صحة الولاية في قائمة البيانات
-  const row =
-    deliveryData.find(
-      x => x.name == wilaya
-    );
-
-  if(!row){
-    alert("الولاية المختارة غير موجودة في قائمة التوصيل");
-    return;
-  }
-
-  // 6. التحقق من نوع التوصيل (حقل المكتب اختياري، لا نحتاج للتحقق منه)
-  // تم إزالة التحقق الإجباري لحقل officeName
-
-  // نهاية التحقق المحسن
-  // =========================================
-
-  let deliveryPrice = 0;
-
-  if(deliveryType === "home"){
-    deliveryPrice = Number(row.home);
-  }else{
-    deliveryPrice = Number(row.office);
-  }
-
-  const total =
-    PRODUCT_PRICE + deliveryPrice;
-
-  const orderData = {
-
-    fullName,
-    phone,
-
-    color:selectedColor,
-    size,
-
-    wilaya,
-    deliveryType,
-    officeName: officeName || "", // إرسال فارغ إذا لم يكتب شيئاً
-
-    productPrice:PRODUCT_PRICE,
-    deliveryPrice,
-    total,
-
-    qty:1
-
-  };
-
-  try{
-
-    const res = await fetch(
-      "/api/send",
-      {
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json"
-        },
-        body:JSON.stringify(orderData)
+      try {
+        const res = await fetch("/api/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(orderData)
+        });
+        const result = await res.json();
+        if (result.ok) {
+          document.getElementById("successModal").style.display = "flex";
+          document.getElementById("fullName").value = "";
+          document.getElementById("phone").value = "";
+          document.getElementById("officeName").value = "";
+        } else {
+          alert("فشل إرسال الطلب");
+        }
+      } catch (err) {
+        console.error(err);
+        alert("خطأ في الاتصال بالخادم");
       }
-    );
-
-    const result = await res.json();
-
-    if(result.ok){
-
-      document.getElementById(
-        "successModal"
-      ).style.display = "flex";
-
-      document.getElementById(
-        "fullName"
-      ).value = "";
-
-      document.getElementById(
-        "phone"
-      ).value = "";
-
-      document.getElementById(
-        "officeName"
-      ).value = "";
-
-    }else{
-
-      alert("فشل إرسال الطلب");
-
     }
 
-  }catch(err){
+    // ========== نافذة النجاح ==========
+    function closeModal() {
+      document.getElementById("successModal").style.display = "none";
+    }
 
-    console.error(err);
-
-    alert("خطأ في الاتصال بالخادم");
-
-  }
-
-}
-
-/* ================= نافذة النجاح ================= */
-
-function closeModal(){
-
-  document.getElementById(
-    "successModal"
-  ).style.display = "none";
-
-}
-
-/* ================= بدء التشغيل ================= */
-
-loadDelivery();
-
-</script>
-
+    // ========== بدء التشغيل ==========
+    loadDelivery();
+  </script>
 </body>
 </html>
