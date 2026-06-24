@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AURES BATNA DZ</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -14,25 +14,25 @@
     }
 
     body {
-      background: #f4f6f9;
-      color: #2d3748;
-      line-height: 1.7;
+      background: #f8fafc;
+      color: #0f172a;
+      line-height: 1.6;
     }
 
     /* HEADER */
     header {
       background: #ffffff;
-      padding: 20px;
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+      padding: 15px 20px;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: center;
       position: sticky;
       top: 0;
       z-index: 100;
     }
 
     .logo-wrapper {
-      max-width: 160px;
-      margin: 0 auto;
+      max-width: 150px;
     }
 
     .logo {
@@ -41,27 +41,35 @@
       display: block;
     }
 
-    /* CONTAINER */
+    /* MAIN CONTAINER */
     .container {
-      max-width: 700px;
-      margin: 30px auto;
-      padding: 0 16px;
+      max-width: 1100px;
+      margin: 30px auto 60px;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
     }
 
-    /* PRODUCT GALLERY */
+    /* RIGHT COLUMN: GALLERY */
+    .gallery-section {
+      position: sticky;
+      top: 100px;
+    }
+
     .viewer {
       background: #ffffff;
-      border-radius: 24px;
+      border-radius: 20px;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
       border: 1px solid #e2e8f0;
-      position: relative;
     }
 
     .viewer img {
       width: 100%;
       height: auto;
-      max-height: 520px;
+      max-height: 500px;
       object-fit: cover;
       display: block;
     }
@@ -70,227 +78,196 @@
       display: flex;
       gap: 12px;
       overflow-x: auto;
-      padding: 15px 5px;
-      scroll-behavior: smooth;
-    }
-
-    .thumbs::-webkit-scrollbar {
-      height: 4px;
+      padding: 15px 0;
     }
 
     .thumbs img {
-      width: 80px;
-      height: 80px;
+      width: 75px;
+      height: 75px;
       object-fit: cover;
-      border-radius: 16px;
+      border-radius: 12px;
       cursor: pointer;
-      border: 3px solid transparent;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      border: 2px solid transparent;
+      transition: all 0.2s ease;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     }
 
     .thumbs img:hover, .thumbs img.active-thumb {
-      border-color: #3182ce;
-      transform: scale(1.05);
+      border-color: #2563eb;
+      transform: translateY(-2px);
     }
 
-    /* CARD DESIGN */
-    .card {
+    /* LEFT COLUMN: DETAILS & FORM */
+    .details-section {
       background: #ffffff;
-      margin-top: 15px;
-      padding: 30px;
+      padding: 35px;
       border-radius: 24px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+      box-shadow: 0 4px 25px rgba(15, 23, 42, 0.02);
       border: 1px solid #e2e8f0;
     }
 
     .product-name {
       font-size: 28px;
       font-weight: 900;
-      color: #1a202c;
+      color: #0f172a;
       margin-bottom: 15px;
-      line-height: 1.4;
     }
 
-    /* HIGH-TECH BADGES */
     .product-badges {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin: 24px 0;
+      gap: 10px;
+      margin-bottom: 25px;
     }
 
     .badge-item {
       display: flex;
       align-items: center;
-      gap: 10px;
-      font-weight: 700;
-      font-size: 14px;
-      color: #4a5568;
-      background: #edf2f7;
-      padding: 14px 16px;
+      gap: 8px;
+      font-weight: 600;
+      font-size: 13px;
+      color: #475569;
+      background: #f1f5f9;
+      padding: 12px 14px;
+      border-radius: 12px;
+    }
+
+    .price-box {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      padding: 20px;
       border-radius: 16px;
-      transition: all 0.2s;
-    }
-
-    .badge-item:hover {
-      background: #e2e8f0;
-    }
-
-    .badge-item .icon {
-      font-size: 20px;
-    }
-
-    /* PRICE TAG */
-    .price {
-      font-size: 32px;
-      font-weight: 900;
-      color: #e53e3e;
-      background: #fff5f5;
-      padding: 15px 20px;
-      border-radius: 16px;
-      display: inline-block;
-      margin: 15px 0 25px 0;
-      border: 1px solid #fed7d7;
-      width: 100%;
+      margin-bottom: 25px;
       text-align: center;
     }
 
-    /* CONTROLS */
+    .price-box .amount {
+      font-size: 32px;
+      font-weight: 900;
+      color: #1d4ed8;
+    }
+
+    /* SELECTORS & INPUTS */
     .section-title {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 700;
-      color: #4a5568;
-      margin-bottom: 12px;
+      color: #334155;
+      margin-bottom: 10px;
     }
 
     .colors {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       margin-bottom: 25px;
     }
 
     .color-btn {
-      padding: 12px 28px;
-      border: 2px solid #e2e8f0;
-      border-radius: 100px;
+      padding: 10px 24px;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
       cursor: pointer;
       background: #ffffff;
-      font-weight: 700;
+      font-weight: 600;
       font-size: 14px;
       transition: all 0.2s ease;
-      color: #4a5568;
-    }
-
-    .color-btn:hover {
-      border-color: #cbd5e0;
+      color: #475569;
     }
 
     .color-btn.active {
-      background: #3182ce;
+      background: #0f172a;
       color: #ffffff;
-      border-color: #3182ce;
-      box-shadow: 0 4px 14px rgba(49, 130, 206, 0.4);
+      border-color: #0f172a;
     }
 
-    /* FORM STYLE */
     .form-group {
-      margin-bottom: 22px;
+      margin-bottom: 20px;
     }
 
     .form-group label {
       display: block;
       margin-bottom: 8px;
-      font-weight: 700;
+      font-weight: 600;
       font-size: 14px;
-      color: #2d3748;
+      color: #334155;
     }
 
     input, select {
       width: 100%;
-      padding: 15px 18px;
-      border: 2px solid #edf2f7;
-      border-radius: 16px;
+      padding: 14px 16px;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
       font-size: 15px;
-      background-color: #f7fafc;
-      color: #1a202c;
+      background-color: #fff;
+      color: #0f172a;
       outline: none;
-      transition: all 0.3s ease;
-      font-weight: 600;
+      transition: all 0.2s ease;
     }
 
     input:focus, select:focus {
-      background-color: #ffffff;
-      border-color: #3182ce;
-      box-shadow: 0 0 0 4px rgba(49, 130, 206, 0.15);
+      border-color: #2563eb;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
     }
 
     /* BILL SUMMARY */
     .summary {
-      background: #f7fafc;
-      padding: 22px;
-      border-radius: 20px;
-      margin: 30px 0;
-      border: 2px solid #edf2f7;
+      background: #f8fafc;
+      padding: 20px;
+      border-radius: 16px;
+      margin: 25px 0;
+      border: 1px solid #e2e8f0;
     }
 
     .summary-row {
       display: flex;
       justify-content: space-between;
-      padding: 8px 0;
-      font-size: 15px;
-      color: #4a5568;
-      font-weight: 600;
+      padding: 6px 0;
+      font-size: 14px;
+      color: #475569;
     }
 
     .summary-row.total {
-      border-top: 2px dashed #e2e8f0;
-      margin-top: 10px;
-      padding-top: 15px;
-      font-size: 20px;
-      font-weight: 900;
-      color: #2b6cb0;
+      border-top: 1px solid #e2e8f0;
+      margin-top: 8px;
+      padding-top: 12px;
+      font-size: 18px;
+      font-weight: 800;
+      color: #0f172a;
     }
 
-    /* THE BIG BUTTON */
+    /* ORDER BUTTON */
     .order-btn {
       width: 100%;
-      padding: 18px;
+      padding: 16px;
       border: none;
-      background: #2b6cb0;
+      background: #2563eb;
       color: #ffffff;
-      font-size: 20px;
-      font-weight: 800;
-      border-radius: 18px;
+      font-size: 18px;
+      font-weight: 700;
+      border-radius: 14px;
       cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 8px 24px rgba(43, 108, 176, 0.3);
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
     }
 
     .order-btn:hover {
-      background: #2b5c8f;
-      transform: translateY(-2px);
-      box-shadow: 0 12px 28px rgba(43, 108, 176, 0.4);
+      background: #1d4ed8;
+      transform: translateY(-1px);
     }
 
     /* FEATURES */
     .features {
       margin-top: 25px;
       background: #ffffff;
-      padding: 30px;
-      border-radius: 24px;
+      padding: 25px;
+      border-radius: 20px;
       border: 1px solid #e2e8f0;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
     }
 
     .features h4 {
-      font-size: 18px;
-      font-weight: 800;
-      margin-bottom: 20px;
-      color: #1a202c;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 15px;
     }
 
     .features ul {
@@ -300,49 +277,43 @@
     .features ul li {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 14px 0;
-      font-size: 15px;
-      color: #4a5568;
-      font-weight: 600;
-      border-bottom: 1px solid #edf2f7;
+      gap: 10px;
+      padding: 10px 0;
+      font-size: 14px;
+      color: #475569;
+      border-bottom: 1px solid #f1f5f9;
     }
 
     .features ul li:last-child {
       border-bottom: none;
     }
 
-    .features ul li final-check {
-      color: #38a169;
+    .features ul li .check {
+      color: #10b981;
       font-weight: bold;
-      font-size: 18px;
     }
 
     /* FOOTER */
     footer {
-      margin-top: 60px;
-      background: #1a202c;
-      color: #a0aec0;
-      padding: 45px 20px;
+      background: #0f172a;
+      color: #94a3b8;
+      padding: 40px 20px;
       text-align: center;
-      border-top-right-radius: 32px;
-      border-top-left-radius: 32px;
+      font-size: 14px;
     }
 
     .footer-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 25px;
-      max-width: 600px;
-      margin: 0 auto 30px;
-      font-size: 15px;
-      font-weight: 600;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      max-width: 800px;
+      margin: 0 auto 20px;
     }
 
     .footer-grid div {
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(255,255,255,0.05);
       padding: 12px;
-      border-radius: 12px;
+      border-radius: 10px;
       color: #fff;
     }
 
@@ -351,7 +322,7 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(26, 32, 44, 0.6);
+      background: rgba(15, 23, 42, 0.5);
       backdrop-filter: blur(4px);
       justify-content: center;
       align-items: center;
@@ -360,51 +331,47 @@
 
     .modal-content {
       background: #ffffff;
-      padding: 40px;
-      border-radius: 28px;
+      padding: 35px;
+      border-radius: 20px;
       width: 90%;
-      max-width: 420px;
+      max-width: 400px;
       text-align: center;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
     }
 
     .success-icon {
-      font-size: 56px;
-      color: #38a169;
-      margin-bottom: 20px;
-    }
-
-    .success-title {
-      font-size: 22px;
-      font-weight: 800;
-      color: #1a202c;
+      font-size: 44px;
+      color: #10b981;
       margin-bottom: 12px;
     }
 
     .close-btn {
-      margin-top: 25px;
-      padding: 14px 35px;
+      margin-top: 20px;
+      padding: 12px 30px;
       border: none;
-      background: #1a202c;
+      background: #0f172a;
       color: #fff;
-      border-radius: 14px;
+      border-radius: 10px;
       cursor: pointer;
-      font-weight: 700;
+      font-weight: 600;
       width: 100%;
-      transition: background 0.2s;
     }
 
-    .close-btn:hover {
-      background: #2d3748;
-    }
-
-    @media (max-width: 640px) {
-      .product-badges {
+    /* RESPONSIVE */
+    @media (max-width: 850px) {
+      .container {
         grid-template-columns: 1fr;
+        gap: 25px;
+        margin: 15px auto;
+      }
+      .gallery-section {
+        position: relative;
+        top: 0;
+      }
+      .details-section {
+        padding: 20px;
       }
       .footer-grid {
         grid-template-columns: 1fr;
-        gap: 12px;
       }
     }
   </style>
@@ -419,34 +386,38 @@
 
   <div class="container">
 
-    <!-- المعرض الاحترافي -->
-    <div class="viewer">
-      <img id="mainImage" src="images/nassim05.gif.gif" alt="صورة المنتج">
+    <!-- العمود الأيمن: معرض الصور -->
+    <div class="gallery-section">
+      <div class="viewer">
+        <img id="mainImage" src="images/nassim05.gif.gif" alt="صورة المنتج">
+      </div>
+      <div class="thumbs">
+        <img src="images/nassim05.gif.gif" alt="صورة 1" class="active-thumb" onclick="changeImage(this)">
+        <img src="images/nnassim01.png.jpg" alt="صورة 2" onclick="changeImage(this)">
+        <img src="images/nassim02.png.jpg" alt="صورة 3" onclick="changeImage(this)">
+        <img src="images/nassim03.png.jpg" alt="صورة 4" onclick="changeImage(this)">
+        <img src="images/nassim04.png.jpg" alt="صورة 5" onclick="changeImage(this)">
+      </div>
     </div>
 
-    <div class="thumbs">
-      <img src="images/nassim05.gif.gif" alt="صورة 1" class="active-thumb" onclick="changeImage(this)">
-      <img src="images/nnassim01.png.jpg" alt="صورة 2" onclick="changeImage(this)">
-      <img src="images/nassim02.png.jpg" alt="صورة 3" onclick="changeImage(this)">
-      <img src="images/nassim03.png.jpg" alt="صورة 4" onclick="changeImage(this)">
-      <img src="images/nassim04.png.jpg" alt="صورة 5" onclick="changeImage(this)">
-    </div>
-
-    <!-- بطاقة شراء المنتج -->
-    <div class="card">
+    <!-- العمود الأيسر: الاستمارة والتفاصيل -->
+    <div class="details-section">
       <div class="product-name">بليغة مودال روعة روعة</div>
 
       <div class="product-badges">
-        <div class="badge-item"><span class="icon">🛡️</span> مضاد للتعرف</div>
-        <div class="badge-item"><span class="icon">⚡</span> خفيف ومريح</div>
-        <div class="badge-item"><span class="icon">⛰️</span> نعل مانع للانزلاق</div>
-        <div class="badge-item"><span class="icon">✨</span> راحة فائقة</div>
+        <div class="badge-item">🛡️ مضاد للتعرف</div>
+        <div class="badge-item">⚡ خفيف ومريح</div>
+        <div class="badge-item">⛰️ نعل مانع للانزلاق</div>
+        <div class="badge-item">✦ راحة فائقة</div>
       </div>
 
-      <div class="price" id="productPrice">السعر الحالي: 1900.00 دج</div>
+      <div class="price-box">
+        <div style="font-size: 14px; color: #475569; margin-bottom: 5px;">السعر الحصري للقطعة</div>
+        <div class="amount" id="productPrice">1900.00 دج</div>
+      </div>
 
       <div class="form-group">
-        <div class="section-title">الألوان المتوفرة</div>
+        <div class="section-title">اختر اللون المتوفر</div>
         <div class="colors">
           <button class="color-btn active" onclick="selectColor(this,'بني')">بني</button>
           <button class="color-btn" onclick="selectColor(this,'رمادي')">رمادي</button>
@@ -503,45 +474,43 @@
           <span><span id="deliveryPrice">0</span> دج</span>
         </div>
         <div class="summary-row total">
-          <span>الإجمالي الكلي للطلب:</span>
+          <span>الإجمالي الكلي:</span>
           <span><span id="totalPrice">1900</span> دج</span>
         </div>
       </div>
 
-      <button class="order-btn" onclick="sendOrder()">اطلب الآن</button>
-    </div>
+      <button class="order-btn" onclick="sendOrder()">اضغط هنا للطلب الآن</button>
 
-    <!-- ميزات إضافية موثوقة -->
-    <div class="features">
-      <h4>⭐ لماذا تختار هذا المنتج؟</h4>
-      <ul>
-        <li><span class="final-check">✓</span> خامة عالية الجودة وممتازة</li>
-        <li><span class="final-check">✓</span> مريح جداً للمشي اليومي الطويل</li>
-        <li><span class="final-check">✓</span> تصميم عصري، كلاسيكي وأنيق</li>
-        <li><span class="final-check">✓</span> الدفع آمن تماماً عـند الاستلام</li>
-        <li><span class="final-check">✓</span> التوصيل السريع لجميع الولايات</li>
-      </ul>
+      <!-- ميزات ممتازة -->
+      <div class="features">
+        <h4>✨ لماذا تشتري من متجرنا؟</h4>
+        <ul>
+          <li><span class="check">✓</span> خامة ممتازة ومضمونة 100%</li>
+          <li><span class="check">✓</span> مريح جداً للاستعمال اليومي والشاق</li>
+          <li><span class="check">✓</span> خدمة الدفع متوفرة عـند الاستلام</li>
+          <li><span class="check">✓</span> شحن وتوصيل موثوق لجميع الولايات</li>
+        </ul>
+      </div>
     </div>
 
   </div>
 
   <footer>
     <div class="footer-grid">
-      <div>🚚 التوصيل إلى 69 ولاية</div>
-      <div>💰 الدفع عند الاستلام آمن</div>
-      <div>📞 الدعم الفني: 0659418701</div>
-      <div>📍 أوراس باتنة الجزائر</div>
+      <div>🚚 شحن سريع وآمن</div>
+      <div>💰 الدفع يد بيد عند الاستلام</div>
+      <div>📞 خدمة الزبائن: 0659418701</div>
     </div>
-    <div style="font-size: 13px; opacity: 0.7;">AURES BATNA DZ © 2026</div>
+    <div style="opacity: 0.6; font-size: 13px;">AURES BATNA DZ © 2026</div>
   </footer>
 
   <!-- نافذة النجاح -->
   <div class="modal" id="successModal">
     <div class="modal-content">
       <div class="success-icon">✓</div>
-      <div class="success-title">تم تسجيل طلبك بنجاح!</div>
-      <p style="color: #718096; font-size: 14px;">سيتصل بك فريق خدمة العملاء قريباً لتأكيد طلبك وتجهيز الشحن.</p>
-      <button class="close-btn" onclick="closeModal()">إغلاق النافذة</button>
+      <h3 style="margin-bottom: 10px;">تم استقبال طلبكم</h3>
+      <p style="color: #64748b; font-size: 14px;">سيتصل بكم فريق الدعم الفني وتأكيد الطلبية هاتفياً في أقرب وقت.</p>
+      <button class="close-btn" onclick="closeModal()">إغلاق</button>
     </div>
   </div>
 
